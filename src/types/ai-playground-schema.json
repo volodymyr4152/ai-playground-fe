@@ -368,6 +368,67 @@
     },
     "components": {
         "schemas": {
+            "AssistantMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    },
+                    "finish_reason": {
+                        "$ref": "#/components/schemas/FinishReasonEnum"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "updated_at"
+                ]
+            },
+            "AssistantMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "item_type"
+                        ]
+                    },
+                    {
+                        "$ref": "#/components/schemas/AssistantMessage"
+                    }
+                ]
+            },
             "ChatCallChain": {
                 "type": "object",
                 "properties": {
@@ -393,14 +454,46 @@
                     "title": {
                         "type": "string",
                         "maxLength": 255
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatItemMultiType"
+                        }
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "items",
                     "span",
                     "updated_at"
                 ]
+            },
+            "ChatItemMultiType": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/UserMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/SystemMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/AssistantMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/ToolMessageTyped"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "item_type",
+                    "mapping": {
+                        "user": "#/components/schemas/UserMessageTyped",
+                        "system": "#/components/schemas/SystemMessageTyped",
+                        "assistant": "#/components/schemas/AssistantMessageTyped",
+                        "tool": "#/components/schemas/ToolMessageTyped"
+                    }
+                }
             },
             "ChatSpan": {
                 "type": "object",
@@ -645,6 +738,26 @@
                     "updated_at"
                 ]
             },
+            "FinishReasonEnum": {
+                "enum": [
+                    "stop",
+                    "length",
+                    "tool_calls",
+                    "content_filter",
+                    "function_call"
+                ],
+                "type": "string",
+                "description": "* `stop` - Stop\n* `length` - Length\n* `tool_calls` - Tool calls\n* `content_filter` - Content filter\n* `function_call` - Function call"
+            },
+            "ItemRoleEnum": {
+                "enum": [
+                    "guardrails",
+                    "instructions",
+                    "conversation"
+                ],
+                "type": "string",
+                "description": "* `guardrails` - Guardrails\n* `instructions` - Instructions\n* `conversation` - Conversation"
+            },
             "PatchedConversationContext": {
                 "type": "object",
                 "properties": {
@@ -699,6 +812,196 @@
                         "maxLength": 255
                     }
                 }
+            },
+            "SystemMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "updated_at"
+                ]
+            },
+            "SystemMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "item_type"
+                        ]
+                    },
+                    {
+                        "$ref": "#/components/schemas/SystemMessage"
+                    }
+                ]
+            },
+            "ToolMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "call_id": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "tool_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "tool_arguments_raw": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "computed_result": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "call_id",
+                    "computed_result",
+                    "created_at",
+                    "id",
+                    "status",
+                    "tool_arguments_raw",
+                    "tool_name",
+                    "updated_at"
+                ]
+            },
+            "ToolMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "item_type"
+                        ]
+                    },
+                    {
+                        "$ref": "#/components/schemas/ToolMessage"
+                    }
+                ]
+            },
+            "UserMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "updated_at"
+                ]
+            },
+            "UserMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "item_type"
+                        ]
+                    },
+                    {
+                        "$ref": "#/components/schemas/UserMessage"
+                    }
+                ]
             }
         },
         "securitySchemes": {

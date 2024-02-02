@@ -30,6 +30,22 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    AssistantMessage: {
+      /** Format: uuid */
+      id: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+      finish_reason?: components["schemas"]["FinishReasonEnum"];
+    };
+    AssistantMessageTyped: {
+      item_type: string;
+    } & components["schemas"]["AssistantMessage"];
     ChatCallChain: {
       /** Format: uuid */
       id: string;
@@ -40,7 +56,9 @@ export interface components {
       /** Format: uuid */
       span: string;
       title?: string;
+      items: components["schemas"]["ChatItemMultiType"][];
     };
+    ChatItemMultiType: components["schemas"]["UserMessageTyped"] | components["schemas"]["SystemMessageTyped"] | components["schemas"]["AssistantMessageTyped"] | components["schemas"]["ToolMessageTyped"];
     ChatSpan: {
       /** Format: uuid */
       id: string;
@@ -108,6 +126,22 @@ export interface components {
       updated_at: string;
       main_goal?: string | null;
     };
+    /**
+     * @description * `stop` - Stop
+     * * `length` - Length
+     * * `tool_calls` - Tool calls
+     * * `content_filter` - Content filter
+     * * `function_call` - Function call
+     * @enum {string}
+     */
+    FinishReasonEnum: "stop" | "length" | "tool_calls" | "content_filter" | "function_call";
+    /**
+     * @description * `guardrails` - Guardrails
+     * * `instructions` - Instructions
+     * * `conversation` - Conversation
+     * @enum {string}
+     */
+    ItemRoleEnum: "guardrails" | "instructions" | "conversation";
     PatchedConversationContext: {
       /** Format: uuid */
       id?: string;
@@ -122,6 +156,54 @@ export interface components {
       updated_at?: string;
       main_goal?: string | null;
     };
+    SystemMessage: {
+      /** Format: uuid */
+      id: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+    };
+    SystemMessageTyped: {
+      item_type: string;
+    } & components["schemas"]["SystemMessage"];
+    ToolMessage: {
+      /** Format: uuid */
+      id: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      call_id: string;
+      tool_name: string;
+      tool_arguments_raw: string;
+      status: string;
+      computed_result: string;
+      token_count?: number;
+    };
+    ToolMessageTyped: {
+      item_type: string;
+    } & components["schemas"]["ToolMessage"];
+    UserMessage: {
+      /** Format: uuid */
+      id: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+    };
+    UserMessageTyped: {
+      item_type: string;
+    } & components["schemas"]["UserMessage"];
   };
   responses: never;
   parameters: never;
