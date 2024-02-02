@@ -1,6 +1,6 @@
 import React from 'react';
 import { TChatSpan, TChatCallChain } from '../types/contextTypes';
-import ChatCallChain from './ChatCallChain';
+// import ChatCallChain from './ChatCallChain';
 
 const ChatSpan: React.FC<{ span: TChatSpan }> = ({ span }) => {
   return (
@@ -9,7 +9,8 @@ const ChatSpan: React.FC<{ span: TChatSpan }> = ({ span }) => {
 
       <div className="space-y-4">
         {span.call_chains.map((chain: TChatCallChain, index: number) => (
-          <ChatCallChain key={index} chain={chain} />
+          // <ChatCallChain key={index} chain={chain} />
+          <span>{chain.title}</span>
         ))}
       </div>
     </div>
