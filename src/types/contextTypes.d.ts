@@ -13,6 +13,8 @@ export type TFinishReasonEnum = components['schemas']['FinishReasonEnum'];
 export type TItemRoleEnum = components['schemas']['ItemRoleEnum'];
 export type TPatchedConversationContext = components['schemas']['PatchedConversationContext'];
 
+
+export type TMessageItemType = "assistant" | "system" | "tool" | "user";
 export type TAssistantMessage = components['schemas']['AssistantMessageTyped'];
 export type TSystemMessage = components['schemas']['SystemMessageTyped'];
 export type TToolMessage = components['schemas']['ToolMessageTyped'];

@@ -7,6 +7,7 @@ import {
   TContextGuideline,
   TConversationContext
 } from '../types/contextTypes';
+import ChatSpan from "./ChatSpan";
 
 const ConversationContext: React.FC<{ conversationContext: TConversationContext }> = ({ conversationContext }) => {
   return (
@@ -53,9 +54,7 @@ const ConversationContext: React.FC<{ conversationContext: TConversationContext 
       <div className="mb-4">
         <h3 className="text-md font-bold">Spans:</h3>
         {conversationContext.spans.map((span: TChatSpan, index: number) => (
-          <div key={index} className="mb-2">
-            <span>{span.title}</span>
-          </div>
+          <ChatSpan key={span.id} span={span} />
         ))}
       </div>
     </div>
