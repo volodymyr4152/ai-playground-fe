@@ -27,7 +27,7 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
   const mainColor = colorByType[props.itemType] || colorByType.default;
   const isNameVisible = (props.authorName !== undefined && props.authorName !== null && props.authorName !== "");
   const isTokenCountVisible = (props.tokenCount !== undefined && props.tokenCount !== null && props.tokenCount > 0);
-  
+
   return (
     <div className="flex flex-wrap items-center space-x-2" data-role="message-header">
       {isNameVisible && <Badge key="authorName" color={mainColor} size="s">Name: {props.authorName}</Badge>}
@@ -39,7 +39,7 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
       <Badge key="updateTime" color="gray">
         updated:<Moment format="HH:mm YYYY-MM-DD">{props.updatedAt}</Moment>
       </Badge>
-      <Badge key="systemId" color="gray">ID:{props.itemId}</Badge>
+      {/*<Badge key="systemId" color="gray">ID:{props.itemId}</Badge>*/}
       {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}
     </div>
   );

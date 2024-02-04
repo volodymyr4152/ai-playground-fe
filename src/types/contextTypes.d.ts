@@ -12,7 +12,7 @@ export type TConversationContext = components['schemas']['ConversationContext'];
 export type TFinishReasonEnum = components['schemas']['FinishReasonEnum'];
 export type TItemRoleEnum = components['schemas']['ItemRoleEnum'];
 export type TPatchedConversationContext = components['schemas']['PatchedConversationContext'];
-
+export type TToolCall = components['schemas']['ToolCallRequest'];
 
 export type TMessageItemType = "assistant" | "system" | "tool" | "user";
 export type TAssistantMessage = components['schemas']['AssistantMessageTyped'];

@@ -13,16 +13,12 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
                                                     created_at,
                                                     updated_at,
                                                     item_role,
-                                                    call_id,
-                                                    tool_name,
-                                                    tool_arguments_raw,
-                                                    status,
-                                                    computed_result,
+                                                    call_request,
                                                     token_count,
                                                     item_type
                                                   }) => {
   return (
-    <div className="bg-green-100 p-4 mb-4 rounded shadow">
+    <div className="bg-green-100 p-2 mb-1 rounded shadow">
       <MessageHeader
         itemId={itemId}
         createdAt={created_at}
@@ -30,11 +26,10 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
         itemRole={item_role}
         itemType={item_type}
         tokenCount={token_count}
-        status={status}
-        callId={call_id}
+        status={call_request.status}
+        callId={call_request.call_id}
       />
-      <p>{tool_name}({tool_arguments_raw})</p>
-      <p>{computed_result}</p>
+      <p>{call_request.tool_name}({call_request.tool_arguments_raw}) -&gt; {call_request.computed_result}</p>
     </div>
   );
 };

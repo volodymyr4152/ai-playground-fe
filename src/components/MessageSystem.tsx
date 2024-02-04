@@ -10,7 +10,7 @@ interface ISystemMessageProps extends Omit<TSystemMessage, 'id'> {
 const MessageSystem: React.FC<ISystemMessageProps> = ({
   itemId, created_at, updated_at, item_role, name, text_content, token_count, item_type
 }) => {
-  return <div className="bg-purple-100 p-4 mb-4 rounded shadow" data-id="system-message">
+  return <div className="bg-purple-100 p-2 mb-1 rounded shadow" data-id="system-message">
     <MessageHeader
       itemId={itemId}
       createdAt={created_at}
@@ -20,7 +20,7 @@ const MessageSystem: React.FC<ISystemMessageProps> = ({
       authorName={name}
       tokenCount={token_count}
     />
-    {text_content && <p>Text Content: {text_content}</p>}
+    {text_content && <p>{text_content}</p>}
   </div>;
 };
 

@@ -403,11 +403,19 @@
                     },
                     "finish_reason": {
                         "$ref": "#/components/schemas/FinishReasonEnum"
+                    },
+                    "tool_call_requests": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolCallRequest"
+                        },
+                        "readOnly": true
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "tool_call_requests",
                     "updated_at"
                 ]
             },
@@ -813,6 +821,16 @@
                     }
                 }
             },
+            "StatusEnum": {
+                "enum": [
+                    "created",
+                    "pending",
+                    "success",
+                    "error"
+                ],
+                "type": "string",
+                "description": "* `created` - Created\n* `pending` - Pending\n* `success` - Success\n* `error` - Error"
+            },
             "SystemMessage": {
                 "type": "object",
                 "properties": {
@@ -871,6 +889,52 @@
                     }
                 ]
             },
+            "ToolCallRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "call_id": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "tool_name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "tool_arguments_raw": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/StatusEnum"
+                    },
+                    "computed_result": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "call_id",
+                    "created_at",
+                    "id",
+                    "tool_name",
+                    "updated_at"
+                ]
+            },
             "ToolMessage": {
                 "type": "object",
                 "properties": {
@@ -892,38 +956,17 @@
                     "item_role": {
                         "$ref": "#/components/schemas/ItemRoleEnum"
                     },
-                    "call_id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "tool_name": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "tool_arguments_raw": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "status": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "computed_result": {
-                        "type": "string",
-                        "readOnly": true
+                    "call_request": {
+                        "$ref": "#/components/schemas/ToolCallRequest"
                     },
                     "token_count": {
                         "type": "integer"
                     }
                 },
                 "required": [
-                    "call_id",
-                    "computed_result",
+                    "call_request",
                     "created_at",
                     "id",
-                    "status",
-                    "tool_arguments_raw",
-                    "tool_name",
                     "updated_at"
                 ]
             },

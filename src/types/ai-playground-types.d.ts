@@ -42,6 +42,7 @@ export interface components {
       text_content?: string | null;
       token_count?: number;
       finish_reason?: components["schemas"]["FinishReasonEnum"];
+      tool_call_requests: readonly components["schemas"]["ToolCallRequest"][];
     };
     AssistantMessageTyped: {
       item_type: string;
@@ -156,6 +157,14 @@ export interface components {
       updated_at?: string;
       main_goal?: string | null;
     };
+    /**
+     * @description * `created` - Created
+     * * `pending` - Pending
+     * * `success` - Success
+     * * `error` - Error
+     * @enum {string}
+     */
+    StatusEnum: "created" | "pending" | "success" | "error";
     SystemMessage: {
       /** Format: uuid */
       id: string;
@@ -171,6 +180,19 @@ export interface components {
     SystemMessageTyped: {
       item_type: string;
     } & components["schemas"]["SystemMessage"];
+    ToolCallRequest: {
+      /** Format: uuid */
+      id: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      call_id: string;
+      tool_name: string;
+      tool_arguments_raw?: string | null;
+      status?: components["schemas"]["StatusEnum"];
+      computed_result?: string | null;
+    };
     ToolMessage: {
       /** Format: uuid */
       id: string;
@@ -179,11 +201,7 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
       item_role?: components["schemas"]["ItemRoleEnum"];
-      call_id: string;
-      tool_name: string;
-      tool_arguments_raw: string;
-      status: string;
-      computed_result: string;
+      call_request: components["schemas"]["ToolCallRequest"];
       token_count?: number;
     };
     ToolMessageTyped: {

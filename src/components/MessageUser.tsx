@@ -8,7 +8,7 @@ interface IUserMessageProps extends Omit<TUserMessage, 'id'> {
 
 const MessageUser: React.FC<IUserMessageProps> = (props) => {
   return (
-    <div className="bg-yellow-100 p-4 mb-4 rounded shadow">
+    <div className="bg-yellow-100 p-2 mb-1 rounded shadow">
       <MessageHeader
         itemId={props.itemId}
         createdAt={props.created_at}
@@ -18,7 +18,7 @@ const MessageUser: React.FC<IUserMessageProps> = (props) => {
         authorName={props.name}
         tokenCount={props.token_count}
       />
-      {props.text_content && <p>Text Content: {props.text_content}</p>}
+      {props.text_content && <p>{props.text_content}</p>}
     </div>
   );
 };
