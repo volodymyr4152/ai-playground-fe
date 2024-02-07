@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from 'react';
+import React from 'react';
 import {
   TChatSpan,
   TContextAssumption,
@@ -11,22 +11,9 @@ import ChatSpan from "./ChatSpan";
 
 interface IConversationContextProps {
   conversationContext: TConversationContext;
-  selectedSpanId?: string;
-  selectedCallChainId?: string;
-  setSelectedSpanId?: (spanId: string) => void;
-  setSelectedChainId?: (chainId: string) => void;
 }
 
 const ConversationContext: React.FC<IConversationContextProps> = (props) => {
-  const spanRefs = useRef({});
-  props.conversationContext.spans.forEach((span: TChatSpan) => {
-    spanRefs.current[span.id] = React.createRef();
-  })
-  setTimeout(() => {
-    if (props.selectedSpanId && spanRefs.current[props.selectedSpanId]) {
-      spanRefs.current[props.selectedSpanId].current.scrollIntoView({behavior: 'smooth'});
-    }
-  }, 1000);
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
       <h2 className="text-lg font-bold mb-2">Conversation Context</h2>
@@ -71,7 +58,7 @@ const ConversationContext: React.FC<IConversationContextProps> = (props) => {
       <div className="mb-4">
         <h3 className="text-md font-bold">Spans:</h3>
         {props.conversationContext.spans.map((span: TChatSpan, index: number) => (
-          <ChatSpan ref={spanRefs[span.id]} key={span.id} span={span}/>
+          <ChatSpan key={span.id} span={span}/>
         ))}
       </div>
     </div>

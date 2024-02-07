@@ -4,13 +4,11 @@ import ChatCallChain from './ChatCallChain';
 
 interface IChatSpanProps {
   span: TChatSpan;
-  ref?: React.Ref<HTMLDivElement>;
-  selectedChainId?: string;
 }
 
 const ChatSpan: React.FC<IChatSpanProps> = (props) => {
   return (
-    <div className="bg-gray-200 p-4 rounded-md mb-4" ref={props.ref}>
+    <div className="bg-gray-200 p-4 rounded-md mb-4" id={`chat-span-${props.span.id}`}>
       <h3 className="text-lg font-bold mb-2">SPAN: {props.span.title}</h3>
 
       <div className="space-y-4">

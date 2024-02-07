@@ -34,10 +34,10 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
       <Badge key="type" color={mainColor} size="s" className="min-w-28">{props.itemType}</Badge>
       <Badge key="role" color={mainColor} size="s">{props.itemRole}</Badge>
       <Badge key="creationTime" color="gray">
-        created:<Moment format="HH:mm YYYY-MM-DD">{props.createdAt}</Moment>
+        created:<Moment format="HH:mm:ss">{props.createdAt}</Moment>
       </Badge>
       <Badge key="updateTime" color="gray">
-        updated:<Moment format="HH:mm YYYY-MM-DD">{props.updatedAt}</Moment>
+        updated:<Moment format="HH:mm:ss">{props.updatedAt}</Moment>
       </Badge>
       {/*<Badge key="systemId" color="gray">ID:{props.itemId}</Badge>*/}
       {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}

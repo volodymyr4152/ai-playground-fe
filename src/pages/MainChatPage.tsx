@@ -13,8 +13,6 @@ const reqInstance = axios.create({
 function MainChatPage() {
   const [contexts, setContexts] = useState([]);
   const [activeContextId, setActiveContext] = useState('');
-  const [selectedSpanId, setSelectedSpanId] = useState('');
-  const [selectedChainId, setSelectedChainId] = useState('');
   const activeContext = contexts.filter((context: TConversationContext) => context.id === activeContextId)[0];
 
   if (Object.keys(contexts).length === 0) {
@@ -33,11 +31,7 @@ function MainChatPage() {
   return (
     <div className="MainChatPage flex flex-row flex-nowrap flex-auto max-h-screen overflow-y-auto">
       <div className="max-w-80 basis-1/4 max-h-full overflow-y-auto overflow-x-hidden">
-        <TableOfContexts
-          contexts={contexts}
-          onSpanClick={(spanId: string) => setSelectedSpanId(spanId)}
-          onChainClick={(chainId: string) => setSelectedChainId(chainId)}
-        />
+        <TableOfContexts contexts={contexts}/>
       </div>
       <div className="basis-3/4 flex-grow chat-content max-h-full overflow-y-auto overflow-x-hidden">
         {activeContext && <ConversationContext conversationContext={activeContext}/>}
