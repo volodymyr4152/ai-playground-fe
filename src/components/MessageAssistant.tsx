@@ -23,7 +23,7 @@ const ToolCallBadge: React.FC<IToolCall> = (toolCall) => {
 
 const MessageAssistant: React.FC<IAssistantMessageProps> = ({ itemId, created_at, updated_at, item_role, name, text_content, token_count, finish_reason, item_type, tool_call_requests }) => {
   return (
-    <div className="bg-blue-100 p-2 mb-1 rounded shadow">
+    <div className="bg-blue-50 p-2 mb-1 rounded shadow">
       <MessageHeader
         itemId={itemId}
         createdAt={created_at}

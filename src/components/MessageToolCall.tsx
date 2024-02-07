@@ -18,7 +18,7 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
                                                     item_type
                                                   }) => {
   return (
-    <div className="bg-green-100 p-2 mb-1 rounded shadow">
+    <div className="bg-green-50 p-2 mb-1 rounded shadow">
       <MessageHeader
         itemId={itemId}
         createdAt={created_at}
