@@ -3,6 +3,7 @@ import axios from "axios";
 import ConversationContext from "../components/ConversationContext";
 import TableOfContexts from "../components/ContextsList";
 import {TConversationContext} from "../types/contextTypes";
+import UserInputBox from "../components/UserInputBox";
 
 const reqInstance = axios.create({
   baseURL: 'http://localhost:3000/api/',
@@ -33,8 +34,12 @@ function MainChatPage() {
       <div className="max-w-80 basis-1/4 max-h-full overflow-y-auto overflow-x-hidden">
         <TableOfContexts contexts={contexts}/>
       </div>
-      <div className="basis-3/4 flex-grow chat-content max-h-full overflow-y-auto overflow-x-hidden">
+      <div className="basis-3/4 chat-content max-h-full overflow-y-auto overflow-x-hidden">
         {activeContext && <ConversationContext conversationContext={activeContext}/>}
+        <UserInputBox
+          onNewSpan={() => console.log('new span!')}
+          onSubmit={() => console.log('submit!')}
+        />
       </div>
     </div>
   );

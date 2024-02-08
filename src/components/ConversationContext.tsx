@@ -15,7 +15,7 @@ interface IConversationContextProps {
 
 const ConversationContext: React.FC<IConversationContextProps> = (props) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4">
+    <div className="bg-white shadow-sm rounded-lg p-1 flex-grow">
       <h2 className="text-lg font-bold mb-2">Conversation Context</h2>
       <div className="mb-4">
         <h3 className="text-md font-bold">Goals:</h3>
@@ -55,9 +55,9 @@ const ConversationContext: React.FC<IConversationContextProps> = (props) => {
         </div>
       </div>
 
-      <div className="mb-4">
+      <div>
         <h3 className="text-md font-bold">Spans:</h3>
-        {props.conversationContext.spans.map((span: TChatSpan, index: number) => (
+        {props.conversationContext.spans.map((span: TChatSpan) => (
           <ChatSpan key={span.id} span={span}/>
         ))}
       </div>

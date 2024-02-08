@@ -12,7 +12,7 @@ interface IChatCallChainProps extends Omit<TChatCallChain, 'id' | 'created_at' |
 
 const ChatCallChain: React.FC<IChatCallChainProps> = ({ chainId, createdAt, updatedAt, span, title, items }) => {
   return (
-    <div className="bg-gray-200 p-4 mb-4 rounded shadow" id={`call-chain-${chainId}`}>
+    <div className="bg-gray-200 p-1 mb-2 rounded shadow" id={`call-chain-${chainId}`}>
       <div className="flex items-center space-x-1">
         <Badge color="purple" size="s">Call Chain: {title || "no-title"}</Badge>
         <Badge color="gray" size="xs">
