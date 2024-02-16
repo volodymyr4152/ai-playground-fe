@@ -18,7 +18,7 @@ function MainChatPage() {
 
   if (Object.keys(contexts).length === 0) {
     reqInstance.get(
-      'aipe/context/'
+      'aipe/contexts/'
     ).then((response) => {
       console.log(response.data);
       setContexts(response.data as TConversationContext[]);

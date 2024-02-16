@@ -14,7 +14,7 @@ export interface paths {
      */
     get: operations["api_schema_retrieve"];
   };
-  "/api/aipe/context/{id}/": {
+  "/api/aipe/contexts/{id}/": {
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
     get: operations["api_aipe_context_retrieve"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */

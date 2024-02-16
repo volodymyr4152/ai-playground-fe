@@ -23,7 +23,7 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
 
   return (
     <div className="flex space-x-2 flex-row flex-grow w-full p-2 mt-1 mb-1 items-start">
-      <textarea className="flex-auto h-full" placeholder={props.placeholder} ref={inputRef} />
+      <textarea className="flex-auto h-full" placeholder={props.placeholder} ref={inputRef} rows={3}/>
       <div className="flex space-y-1 flex-col items-stretch h-full">
         <Button gradientDuoTone="purpleToBlue" pill onClick={handleOnSubmit}>{submitButtonText}</Button>
         <Button gradientDuoTone="redToYellow" pill onClick={props.onNewSpan}>{newSpanButtonText}</Button>
