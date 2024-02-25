@@ -6,14 +6,9 @@ import UserInputBox from "../components/UserInputBox";
 import {ChatCtxProvider } from "../contexts/ChatCtx";
 import {useChatListCtx} from "../contexts/ChatListCtx";
 
-const reqInstance = axios.create({baseURL: 'http://localhost:3000/api/aipe/', timeout: 3000,});
-
 
 function MainChatPage() {
-  const {chatList, isLoading} = useChatListCtx();
-  const [activeChatId, setActiveChatId] = useState(undefined);
-  const firstChatId = chatList?.[0]?.id;
-  const selectedChatId = activeChatId || firstChatId;
+  const {chatList, isLoading, selectedChatId} = useChatListCtx();
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -28,10 +23,7 @@ function MainChatPage() {
         </div>
         <div className="basis-3/4 chat-content max-h-full overflow-y-auto overflow-x-hidden">
           {selectedChatId && <Chat/>}
-          <UserInputBox
-            onNewSpan={() => console.log('new span!')}
-            onSubmit={() => console.log('submit!')}
-          />
+          <UserInputBox />
         </div>
       </ChatCtxProvider>
     </div>

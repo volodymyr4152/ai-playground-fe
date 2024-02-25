@@ -175,14 +175,279 @@
                 }
             }
         },
-        "/api/aipe/context/{id}/": {
+        "/api/aipe/chains/{chain_id}/": {
             "get": {
-                "operationId": "api_aipe_context_retrieve",
+                "operationId": "api_aipe_chains_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatCallChain"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "api_aipe_chains_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatCallChain"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "api_aipe_chains_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatCallChain"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatCallChain"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatCallChain"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatCallChain"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "api_aipe_chains_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/aipe/contexts/": {
+            "get": {
+                "operationId": "api_aipe_contexts_list",
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ConversationContext"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "api_aipe_contexts_create",
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConversationContext"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConversationContext"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConversationContext"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversationContext"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/aipe/contexts/{context_id}/": {
+            "get": {
+                "operationId": "api_aipe_contexts_retrieve",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "id",
+                        "name": "context_id",
                         "schema": {
                             "type": "string",
                             "format": "uuid"
@@ -216,12 +481,12 @@
                 }
             },
             "put": {
-                "operationId": "api_aipe_context_update",
+                "operationId": "api_aipe_contexts_update",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "id",
+                        "name": "context_id",
                         "schema": {
                             "type": "string",
                             "format": "uuid"
@@ -275,12 +540,12 @@
                 }
             },
             "patch": {
-                "operationId": "api_aipe_context_partial_update",
+                "operationId": "api_aipe_contexts_partial_update",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "id",
+                        "name": "context_id",
                         "schema": {
                             "type": "string",
                             "format": "uuid"
@@ -333,12 +598,12 @@
                 }
             },
             "delete": {
-                "operationId": "api_aipe_context_destroy",
+                "operationId": "api_aipe_contexts_destroy",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "id",
+                        "name": "context_id",
                         "schema": {
                             "type": "string",
                             "format": "uuid"
@@ -361,6 +626,392 @@
                 "responses": {
                     "204": {
                         "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/aipe/contexts/{context_id}/spans/": {
+            "get": {
+                "operationId": "api_aipe_contexts_spans_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "context_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChatSpan"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "api_aipe_contexts_spans_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "context_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSpan"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/aipe/spans/{span_id}/": {
+            "get": {
+                "operationId": "api_aipe_spans_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSpan"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "api_aipe_spans_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatSpan"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSpan"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "api_aipe_spans_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatSpan"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatSpan"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatSpan"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSpan"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "api_aipe_spans_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/aipe/spans/{span_id}/chains/": {
+            "get": {
+                "operationId": "api_aipe_spans_chains_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChatCallChain"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "api_aipe_spans_chains_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "span_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "api"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatCallChain"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatCallChain"
+                                }
+                            }
+                        },
+                        "description": ""
                     }
                 }
             }
@@ -474,7 +1125,6 @@
                     "created_at",
                     "id",
                     "items",
-                    "span",
                     "updated_at"
                 ]
             },
@@ -523,16 +1173,17 @@
                     },
                     "slug": {
                         "type": "string",
-                        "maxLength": 255
+                        "readOnly": true
                     },
                     "title": {
                         "type": "string",
-                        "nullable": true,
-                        "maxLength": 255
+                        "readOnly": true,
+                        "nullable": true
                     },
                     "replaced_by": {
                         "type": "string",
                         "format": "uuid",
+                        "readOnly": true,
                         "nullable": true
                     },
                     "call_chains": {
@@ -540,12 +1191,18 @@
                         "items": {
                             "$ref": "#/components/schemas/ChatCallChain"
                         }
+                    },
+                    "context": {
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "required": [
-                    "call_chains",
                     "created_at",
                     "id",
+                    "replaced_by",
+                    "slug",
+                    "title",
                     "updated_at"
                 ]
             },
@@ -765,6 +1422,85 @@
                 ],
                 "type": "string",
                 "description": "* `guardrails` - Guardrails\n* `instructions` - Instructions\n* `conversation` - Conversation"
+            },
+            "PatchedChatCallChain": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "span": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatItemMultiType"
+                        }
+                    }
+                }
+            },
+            "PatchedChatSpan": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "slug": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "replaced_by": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "call_chains": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatCallChain"
+                        }
+                    },
+                    "context": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
             },
             "PatchedConversationContext": {
                 "type": "object",
@@ -1019,12 +1755,14 @@
                         "nullable": true
                     },
                     "token_count": {
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "token_count",
                     "updated_at"
                 ]
             },

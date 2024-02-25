@@ -1,4 +1,4 @@
-import {createContext, useContext} from "react";
+import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
 import {aipeReqInstance} from "./utils";
 import {useQuery} from "react-query";
@@ -9,6 +9,8 @@ interface IChatListCtx {
   chatList?: TChat[]
   isLoading: boolean
   refreshChatList: () => void
+  selectedChatId?: string
+  setSelectedChatId: (id: string) => void
 }
 
 export const ChatListCtx = createContext<IChatListCtx>(undefined);
@@ -29,8 +31,15 @@ export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
     },
   });
 
+  const firstChatId = data?.[0]?.id;
+  const [selectedChatId, setSelectedChatId] = useState<string>(undefined);
+
   return <ChatListCtx.Provider value={{
-    chatList: data, isLoading: isLoading, refreshChatList: refetch
+    chatList: data,
+    isLoading,
+    refreshChatList: refetch,
+    selectedChatId: selectedChatId || firstChatId,
+    setSelectedChatId,
   }}>
     {props.children}
   </ChatListCtx.Provider>;

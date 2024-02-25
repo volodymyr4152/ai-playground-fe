@@ -1,15 +1,17 @@
 import {createContext, useContext} from "react";
-import {TAssumption, TChat, TChatSpan, TFact, TGoal, TGuideline} from "../types/dataTypes";
-import {useQuery} from "react-query";
+import {TAssumption, TChat, TChatItemMultiType, TChatSpan, TFact, TGoal, TGuideline} from "../types/dataTypes";
+import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setSpanNestedData} from "./SpanCtx";
-import {aipeReqInstance} from "./utils";
+import {addSpanItem, aipeReqInstance, createNewSpan} from "./utils";
 
 interface IChatCtx {
   chatData?: TChat
   chatId: string
   isLoading: boolean
   refreshChat: () => void
+  addChatItem: (item: Partial<TChatItemMultiType>) => void
+  addNewSpan: (span: Partial<TChatSpan>) => void
 }
 
 export const ChatCtx = createContext<IChatCtx>(undefined);
@@ -36,8 +38,27 @@ export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: stri
     enabled: !!props.chatId,
     onSuccess: setChatNestedData,
   });
+
+  const addChatItem = useMutation({
+    mutationFn: (item: Partial<TChatItemMultiType>) => {
+      const lastSpanId = data?.spans[data.spans.length - 1];
+      return addSpanItem(lastSpanId.id, item);
+    },
+    onSuccess: (result, variables, context) => { console.log('item added', result); },
+  });
+
+  const addNewSpan = useMutation({
+    mutationFn: (spanInfo: Partial<TChatSpan>) => { return createNewSpan(props.chatId, spanInfo); },
+    onSuccess: (result, variables, context) => { console.log('new span added', result); },
+  })
+
   return <ChatCtx.Provider value={{
-    chatId: props.chatId, chatData: data, isLoading: isLoading, refreshChat: refetch,
+    chatId: props.chatId,
+    chatData: data,
+    isLoading: isLoading,
+    refreshChat: refetch,
+    addChatItem: addChatItem.mutate,
+    addNewSpan: addNewSpan.mutate,
   }}>
     {props.children}
   </ChatCtx.Provider>;

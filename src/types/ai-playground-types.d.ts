@@ -14,15 +14,39 @@ export interface paths {
      */
     get: operations["api_schema_retrieve"];
   };
-  "/api/aipe/contexts/{id}/": {
+  "/api/aipe/chains/{chain_id}/": {
+    get: operations["api_aipe_chains_retrieve"];
+    put: operations["api_aipe_chains_update"];
+    delete: operations["api_aipe_chains_destroy"];
+    patch: operations["api_aipe_chains_partial_update"];
+  };
+  "/api/aipe/contexts/": {
+    get: operations["api_aipe_contexts_list"];
+    post: operations["api_aipe_contexts_create"];
+  };
+  "/api/aipe/contexts/{context_id}/": {
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    get: operations["api_aipe_context_retrieve"];
+    get: operations["api_aipe_contexts_retrieve"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    put: operations["api_aipe_context_update"];
+    put: operations["api_aipe_contexts_update"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    delete: operations["api_aipe_context_destroy"];
+    delete: operations["api_aipe_contexts_destroy"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    patch: operations["api_aipe_context_partial_update"];
+    patch: operations["api_aipe_contexts_partial_update"];
+  };
+  "/api/aipe/contexts/{context_id}/spans/": {
+    get: operations["api_aipe_contexts_spans_list"];
+    post: operations["api_aipe_contexts_spans_create"];
+  };
+  "/api/aipe/spans/{span_id}/": {
+    get: operations["api_aipe_spans_retrieve"];
+    put: operations["api_aipe_spans_update"];
+    delete: operations["api_aipe_spans_destroy"];
+    patch: operations["api_aipe_spans_partial_update"];
+  };
+  "/api/aipe/spans/{span_id}/chains/": {
+    get: operations["api_aipe_spans_chains_list"];
+    post: operations["api_aipe_spans_chains_create"];
   };
 }
 
@@ -55,7 +79,7 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
       /** Format: uuid */
-      span: string;
+      span?: string;
       title?: string;
       items: components["schemas"]["ChatItemMultiType"][];
     };
@@ -67,11 +91,13 @@ export interface components {
       created_at: string;
       /** Format: date-time */
       updated_at: string;
-      slug?: string;
-      title?: string | null;
+      slug: string;
+      title: string | null;
       /** Format: uuid */
-      replaced_by?: string | null;
-      call_chains: components["schemas"]["ChatCallChain"][];
+      replaced_by: string | null;
+      call_chains?: components["schemas"]["ChatCallChain"][];
+      /** Format: uuid */
+      context?: string;
     };
     ContextAssumption: {
       /** Format: uuid */
@@ -143,6 +169,33 @@ export interface components {
      * @enum {string}
      */
     ItemRoleEnum: "guardrails" | "instructions" | "conversation";
+    PatchedChatCallChain: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      /** Format: uuid */
+      span?: string;
+      title?: string;
+      items?: components["schemas"]["ChatItemMultiType"][];
+    };
+    PatchedChatSpan: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      slug?: string;
+      title?: string | null;
+      /** Format: uuid */
+      replaced_by?: string | null;
+      call_chains?: components["schemas"]["ChatCallChain"][];
+      /** Format: uuid */
+      context?: string;
+    };
     PatchedConversationContext: {
       /** Format: uuid */
       id?: string;
@@ -214,10 +267,10 @@ export interface components {
       created_at: string;
       /** Format: date-time */
       updated_at: string;
-      item_role?: components["schemas"]["ItemRoleEnum"];
+      item_role: components["schemas"]["ItemRoleEnum"];
       name?: string | null;
       text_content?: string | null;
-      token_count?: number;
+      token_count: number;
     };
     UserMessageTyped: {
       item_type: string;
@@ -268,11 +321,105 @@ export interface operations {
       };
     };
   };
-  /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_context_retrieve: {
+  api_aipe_chains_retrieve: {
     parameters: {
       path: {
-        id: string;
+        chain_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatCallChain"];
+        };
+      };
+    };
+  };
+  api_aipe_chains_update: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChatCallChain"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatCallChain"];
+        "multipart/form-data": components["schemas"]["ChatCallChain"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatCallChain"];
+        };
+      };
+    };
+  };
+  api_aipe_chains_destroy: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    responses: {
+      /** @description No response body */
+      204: {
+        content: never;
+      };
+    };
+  };
+  api_aipe_chains_partial_update: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchedChatCallChain"];
+        "application/x-www-form-urlencoded": components["schemas"]["PatchedChatCallChain"];
+        "multipart/form-data": components["schemas"]["PatchedChatCallChain"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatCallChain"];
+        };
+      };
+    };
+  };
+  api_aipe_contexts_list: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ConversationContext"][];
+        };
+      };
+    };
+  };
+  api_aipe_contexts_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ConversationContext"];
+        "application/x-www-form-urlencoded": components["schemas"]["ConversationContext"];
+        "multipart/form-data": components["schemas"]["ConversationContext"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ConversationContext"];
+        };
+      };
+    };
+  };
+  /** @description Concrete view for retrieving, updating or deleting a context instance. */
+  api_aipe_contexts_retrieve: {
+    parameters: {
+      path: {
+        context_id: string;
       };
     };
     responses: {
@@ -284,10 +431,10 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_context_update: {
+  api_aipe_contexts_update: {
     parameters: {
       path: {
-        id: string;
+        context_id: string;
       };
     };
     requestBody: {
@@ -306,10 +453,10 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_context_destroy: {
+  api_aipe_contexts_destroy: {
     parameters: {
       path: {
-        id: string;
+        context_id: string;
       };
     };
     responses: {
@@ -320,10 +467,10 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_context_partial_update: {
+  api_aipe_contexts_partial_update: {
     parameters: {
       path: {
-        id: string;
+        context_id: string;
       };
     };
     requestBody?: {
@@ -337,6 +484,145 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["ConversationContext"];
+        };
+      };
+    };
+  };
+  api_aipe_contexts_spans_list: {
+    parameters: {
+      path: {
+        context_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatSpan"][];
+        };
+      };
+    };
+  };
+  api_aipe_contexts_spans_create: {
+    parameters: {
+      path: {
+        context_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatSpan"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatSpan"];
+        "multipart/form-data": components["schemas"]["ChatSpan"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ChatSpan"];
+        };
+      };
+    };
+  };
+  api_aipe_spans_retrieve: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatSpan"];
+        };
+      };
+    };
+  };
+  api_aipe_spans_update: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatSpan"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatSpan"];
+        "multipart/form-data": components["schemas"]["ChatSpan"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatSpan"];
+        };
+      };
+    };
+  };
+  api_aipe_spans_destroy: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    responses: {
+      /** @description No response body */
+      204: {
+        content: never;
+      };
+    };
+  };
+  api_aipe_spans_partial_update: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchedChatSpan"];
+        "application/x-www-form-urlencoded": components["schemas"]["PatchedChatSpan"];
+        "multipart/form-data": components["schemas"]["PatchedChatSpan"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatSpan"];
+        };
+      };
+    };
+  };
+  api_aipe_spans_chains_list: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatCallChain"][];
+        };
+      };
+    };
+  };
+  api_aipe_spans_chains_create: {
+    parameters: {
+      path: {
+        span_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ChatCallChain"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatCallChain"];
+        "multipart/form-data": components["schemas"]["ChatCallChain"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ChatCallChain"];
         };
       };
     };
