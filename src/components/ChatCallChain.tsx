@@ -1,5 +1,5 @@
 import React from 'react';
-import {TChatCallChain} from "../types/contextTypes";
+import {TChatCallChain} from "../types/dataTypes";
 import MessageItem from "./MessageMultitype";
 import {Badge} from "flowbite-react";
 import Moment from "react-moment";

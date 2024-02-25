@@ -1,20 +1,20 @@
-import {TChat} from "../types/contextTypes";
+import {TChat} from "../types/dataTypes";
 
-interface ITableOfContextsProps {
-  contexts: TChat[]
+interface ITableOfContentsProps {
+  chats: TChat[]
 }
 
-const TableOfContexts: React.FC<ITableOfContextsProps> = (props) => {
-  if (!props.contexts) {
+const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
+  if (!props.chats) {
     return <div>Waiting for data</div>
   }
 
   return <div>
-    {props.contexts.map((context) => (
-      <div key={context.id} className="border border-gray-200 p-1 pr-0 rounded shadow overflow-x-hidden">
-        <span className="overflow-x-hidden text-ellipsis text-nowrap">Context ID: {context.id}</span>
+    {props.chats.map((chat) => (
+      <div key={chat.id} className="border border-gray-200 p-1 pr-0 rounded shadow overflow-x-hidden">
+        <span className="overflow-x-hidden text-ellipsis text-nowrap">ID: {chat.id}</span>
         <div className="ml-1">
-          {context.spans.map((span) => (
+          {chat.spans.map((span) => (
             <div
               key={span.id}
               className="border border-gray-200 p-1 pr-0 rounded shadow hover:bg-gray-100"
@@ -43,4 +43,4 @@ const TableOfContexts: React.FC<ITableOfContextsProps> = (props) => {
   </div>
 }
 
-export default TableOfContexts
+export default TableOfContents

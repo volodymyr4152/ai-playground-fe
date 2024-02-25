@@ -1,5 +1,5 @@
 import React from 'react';
-import {TChatItemMultiType} from "../types/contextTypes";
+import {TChatItemMultiType} from "../types/dataTypes";
 import MessageAssistant, {IAssistantMessageProps} from "./MessageAssistant";
 import ToolMessage, {IToolMessageProps} from "./MessageToolCall";
 import MessageUser, {IUserMessageProps} from "./MessageUser";

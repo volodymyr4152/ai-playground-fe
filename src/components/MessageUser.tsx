@@ -1,5 +1,5 @@
 import React from 'react';
-import {TUserMessage} from "../types/contextTypes";
+import {TUserMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 
 interface IUserMessageProps extends Omit<TUserMessage, 'id'> {

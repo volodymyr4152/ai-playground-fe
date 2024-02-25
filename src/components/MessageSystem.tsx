@@ -1,5 +1,5 @@
 import React from 'react';
-import {TSystemMessage} from "../types/contextTypes";
+import {TSystemMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 import Markdown from "react-markdown";
 import codeblocks from "remark-code-blocks";

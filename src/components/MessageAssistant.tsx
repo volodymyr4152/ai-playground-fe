@@ -1,5 +1,5 @@
 import React from 'react';
-import {TAssistantMessage, TToolCall} from "../types/contextTypes";
+import {TAssistantMessage, TToolCall} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 import {Badge} from "flowbite-react";
 

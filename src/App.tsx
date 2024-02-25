@@ -3,7 +3,13 @@ import './App.css';
 import MainChatPage from "./pages/MainChatPage";
 import {QueryClient, QueryClientProvider} from "react-query";
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5000
+    }
+  }
+});
 
 function App() {
 

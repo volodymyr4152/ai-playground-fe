@@ -1,5 +1,5 @@
 import React from 'react';
-import {TToolMessage} from "../types/contextTypes";
+import {TToolMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 
 
