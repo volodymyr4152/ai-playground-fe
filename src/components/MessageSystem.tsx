@@ -1,6 +1,8 @@
 import React from 'react';
 import {TSystemMessage} from "../types/contextTypes";
 import MessageHeader from "./MsgHeader";
+import Markdown from "react-markdown";
+import codeblocks from "remark-code-blocks";
 
 interface ISystemMessageProps extends Omit<TSystemMessage, 'id'> {
   itemId: string;
@@ -20,7 +22,7 @@ const MessageSystem: React.FC<ISystemMessageProps> = ({
       authorName={name}
       tokenCount={token_count}
     />
-    {text_content && <p>{text_content}</p>}
+    {text_content && <Markdown remarkPlugins={[codeblocks]}>{text_content.replace("\n", "\n\n")}</Markdown>}
   </div>;
 };
 

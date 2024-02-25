@@ -1,10 +1,14 @@
-import {TConversationContext} from "../types/contextTypes";
+import {TChat} from "../types/contextTypes";
 
 interface ITableOfContextsProps {
-  contexts: TConversationContext[]
+  contexts: TChat[]
 }
 
 const TableOfContexts: React.FC<ITableOfContextsProps> = (props) => {
+  if (!props.contexts) {
+    return <div>Waiting for data</div>
+  }
+
   return <div>
     {props.contexts.map((context) => (
       <div key={context.id} className="border border-gray-200 p-1 pr-0 rounded shadow overflow-x-hidden">
