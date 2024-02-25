@@ -1,9 +1,9 @@
 import {createContext, useContext} from "react";
-import {TChat, TChatSpan} from "../types/dataTypes";
-import axios from "axios";
+import {TAssumption, TChat, TChatSpan, TFact, TGoal, TGuideline} from "../types/dataTypes";
 import {useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setSpanNestedData} from "./SpanCtx";
+import {aipeReqInstance} from "./utils";
 
 interface IChatCtx {
   chatData?: TChat
@@ -13,18 +13,17 @@ interface IChatCtx {
 }
 
 export const ChatCtx = createContext<IChatCtx>(undefined);
-const aipeReqInstance = axios.create({baseURL: 'http://localhost:3000/api/aipe/', timeout: 3000,});
 
 export const useChatCtx = () => {
   return useContext(ChatCtx);
 };
 
 export const setChatNestedData = (data: TChat) => {
-  data.facts.forEach((fact) => queryClient.setQueryData(['fact', fact.id], fact));
-  data.assumptions.forEach((assumption) => queryClient.setQueryData(['assumption', assumption.id], assumption));
-  data.goals.forEach((goal) => queryClient.setQueryData(['goal', goal.id], goal));
-  data.guidelines.forEach((guideline) => queryClient.setQueryData(['guideline', guideline.id], guideline));
-  data.spans.forEach((span) => {
+  data.facts.forEach((fact: TFact) => queryClient.setQueryData(['fact', fact.id], fact));
+  data.assumptions.forEach((assumption: TAssumption) => queryClient.setQueryData(['assumption', assumption.id], assumption));
+  data.goals.forEach((goal: TGoal) => queryClient.setQueryData(['goal', goal.id], goal));
+  data.guidelines.forEach((guideline: TGuideline) => queryClient.setQueryData(['guideline', guideline.id], guideline));
+  data.spans.forEach((span: TChatSpan) => {
     queryClient.setQueryData(['span', span.id], span);
     setSpanNestedData(span);
   });

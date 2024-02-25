@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import MainChatPage from "./pages/MainChatPage";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {ChatListCtxProvider} from "./contexts/ChatListCtx";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +15,9 @@ export const queryClient = new QueryClient({
 function App() {
 
   return <QueryClientProvider client={queryClient}>
-    <MainChatPage/>
+    <ChatListCtxProvider>
+      <MainChatPage/>
+    </ChatListCtxProvider>
   </QueryClientProvider>;
 }
 

@@ -3,6 +3,7 @@ import {TChatCallChain, TChatItemMultiType, TChatSpan} from "../types/dataTypes"
 import axios from "axios";
 import {useQuery} from "react-query";
 import {queryClient} from "../App";
+import {aipeReqInstance} from "./utils";
 
 interface ISpanCtx {
   spanData?: TChatSpan
@@ -12,7 +13,6 @@ interface ISpanCtx {
 }
 
 export const SpanCtx = createContext<ISpanCtx>(undefined);
-const aipeReqInstance = axios.create({baseURL: 'http://localhost:3000/api/aipe/', timeout: 3000,});
 
 export const useSpanCtx = () => {
   return useContext(SpanCtx);
