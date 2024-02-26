@@ -11,7 +11,7 @@ const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
   }
 
   return <div className="w-full flex flex-col pr-2 pl-1 pt-4 justify-stretch bg-blue-50 h-full">
-    <Button className="w-full p-1" onClick={createChat}>
+    <Button className="justify-stretch p-0 mr-1 ml-1" onClick={createChat}>
       New Chat
     </Button>
     {chatList.map((chat) => (
