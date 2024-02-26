@@ -177,7 +177,7 @@
         },
         "/api/aipe/chains/{chain_id}/": {
             "get": {
-                "operationId": "api_aipe_chains_retrieve",
+                "operationId": "chains_retrieve",
                 "parameters": [
                     {
                         "in": "path",
@@ -190,7 +190,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "chains"
                 ],
                 "security": [
                     {
@@ -215,7 +215,7 @@
                 }
             },
             "put": {
-                "operationId": "api_aipe_chains_update",
+                "operationId": "chains_update",
                 "parameters": [
                     {
                         "in": "path",
@@ -228,7 +228,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "chains"
                 ],
                 "requestBody": {
                     "content": {
@@ -273,7 +273,7 @@
                 }
             },
             "patch": {
-                "operationId": "api_aipe_chains_partial_update",
+                "operationId": "chains_partial_update",
                 "parameters": [
                     {
                         "in": "path",
@@ -286,7 +286,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "chains"
                 ],
                 "requestBody": {
                     "content": {
@@ -330,7 +330,7 @@
                 }
             },
             "delete": {
-                "operationId": "api_aipe_chains_destroy",
+                "operationId": "chains_destroy",
                 "parameters": [
                     {
                         "in": "path",
@@ -343,7 +343,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "chains"
                 ],
                 "security": [
                     {
@@ -363,9 +363,9 @@
         },
         "/api/aipe/contexts/": {
             "get": {
-                "operationId": "api_aipe_contexts_list",
+                "operationId": "contexts_list",
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "security": [
                     {
@@ -393,9 +393,9 @@
                 }
             },
             "post": {
-                "operationId": "api_aipe_contexts_create",
+                "operationId": "contexts_create",
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "requestBody": {
                     "content": {
@@ -442,7 +442,7 @@
         },
         "/api/aipe/contexts/{context_id}/": {
             "get": {
-                "operationId": "api_aipe_contexts_retrieve",
+                "operationId": "contexts_retrieve",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
@@ -456,7 +456,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "security": [
                     {
@@ -481,7 +481,7 @@
                 }
             },
             "put": {
-                "operationId": "api_aipe_contexts_update",
+                "operationId": "contexts_update",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
@@ -495,7 +495,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "requestBody": {
                     "content": {
@@ -540,7 +540,7 @@
                 }
             },
             "patch": {
-                "operationId": "api_aipe_contexts_partial_update",
+                "operationId": "contexts_partial_update",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
@@ -554,7 +554,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "requestBody": {
                     "content": {
@@ -598,7 +598,7 @@
                 }
             },
             "delete": {
-                "operationId": "api_aipe_contexts_destroy",
+                "operationId": "contexts_destroy",
                 "description": "Concrete view for retrieving, updating or deleting a context instance.",
                 "parameters": [
                     {
@@ -612,7 +612,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "security": [
                     {
@@ -632,7 +632,7 @@
         },
         "/api/aipe/contexts/{context_id}/spans/": {
             "get": {
-                "operationId": "api_aipe_contexts_spans_list",
+                "operationId": "contexts_spans_list",
                 "parameters": [
                     {
                         "in": "path",
@@ -645,7 +645,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "security": [
                     {
@@ -673,7 +673,7 @@
                 }
             },
             "post": {
-                "operationId": "api_aipe_contexts_spans_create",
+                "operationId": "contexts_spans_create",
                 "parameters": [
                     {
                         "in": "path",
@@ -686,7 +686,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "contexts"
                 ],
                 "requestBody": {
                     "content": {
@@ -732,7 +732,7 @@
         },
         "/api/aipe/spans/{span_id}/": {
             "get": {
-                "operationId": "api_aipe_spans_retrieve",
+                "operationId": "spans_retrieve",
                 "parameters": [
                     {
                         "in": "path",
@@ -745,7 +745,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "security": [
                     {
@@ -770,7 +770,7 @@
                 }
             },
             "put": {
-                "operationId": "api_aipe_spans_update",
+                "operationId": "spans_update",
                 "parameters": [
                     {
                         "in": "path",
@@ -783,7 +783,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "requestBody": {
                     "content": {
@@ -827,7 +827,7 @@
                 }
             },
             "patch": {
-                "operationId": "api_aipe_spans_partial_update",
+                "operationId": "spans_partial_update",
                 "parameters": [
                     {
                         "in": "path",
@@ -840,7 +840,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "requestBody": {
                     "content": {
@@ -884,7 +884,7 @@
                 }
             },
             "delete": {
-                "operationId": "api_aipe_spans_destroy",
+                "operationId": "spans_destroy",
                 "parameters": [
                     {
                         "in": "path",
@@ -897,7 +897,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "security": [
                     {
@@ -917,7 +917,7 @@
         },
         "/api/aipe/spans/{span_id}/chains/": {
             "get": {
-                "operationId": "api_aipe_spans_chains_list",
+                "operationId": "spans_chains_list",
                 "parameters": [
                     {
                         "in": "path",
@@ -930,7 +930,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "security": [
                     {
@@ -958,7 +958,7 @@
                 }
             },
             "post": {
-                "operationId": "api_aipe_spans_chains_create",
+                "operationId": "spans_chains_create",
                 "parameters": [
                     {
                         "in": "path",
@@ -971,7 +971,7 @@
                     }
                 ],
                 "tags": [
-                    "api"
+                    "spans"
                 ],
                 "requestBody": {
                     "content": {

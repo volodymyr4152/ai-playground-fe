@@ -19,7 +19,7 @@ function MainChatPage() {
     <div className="MainChatPage flex flex-row flex-nowrap flex-auto max-h-screen overflow-y-auto">
       <ChatCtxProvider chatId={selectedChatId}>
         <div className="max-w-80 basis-1/4 max-h-full overflow-y-auto overflow-x-hidden">
-          <TableOfContents chats={chatList}/>
+          <TableOfContents/>
         </div>
         <div className="basis-3/4 chat-content max-h-full overflow-y-auto overflow-x-hidden">
           {selectedChatId && <Chat/>}

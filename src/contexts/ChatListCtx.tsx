@@ -1,7 +1,7 @@
 import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
-import {aipeReqInstance} from "./utils";
-import {useQuery} from "react-query";
+import {aipeReqInstance, createNewChat} from "./utils";
+import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setChatNestedData} from "./ChatCtx";
 
@@ -11,6 +11,7 @@ interface IChatListCtx {
   refreshChatList: () => void
   selectedChatId?: string
   setSelectedChatId: (id: string) => void
+  createChat: () => void
 }
 
 export const ChatListCtx = createContext<IChatListCtx>(undefined);
@@ -34,12 +35,17 @@ export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
   const firstChatId = data?.[0]?.id;
   const [selectedChatId, setSelectedChatId] = useState<string>(undefined);
 
+  const createChat = useMutation({
+    mutationFn: (chat: Partial<TChat>) => createNewChat(chat),
+  });
+
   return <ChatListCtx.Provider value={{
     chatList: data,
     isLoading,
     refreshChatList: refetch,
     selectedChatId: selectedChatId || firstChatId,
     setSelectedChatId,
+    createChat: () => createChat.mutate({}),
   }}>
     {props.children}
   </ChatListCtx.Provider>;

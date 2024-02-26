@@ -15,38 +15,38 @@ export interface paths {
     get: operations["api_schema_retrieve"];
   };
   "/api/aipe/chains/{chain_id}/": {
-    get: operations["api_aipe_chains_retrieve"];
-    put: operations["api_aipe_chains_update"];
-    delete: operations["api_aipe_chains_destroy"];
-    patch: operations["api_aipe_chains_partial_update"];
+    get: operations["chains_retrieve"];
+    put: operations["chains_update"];
+    delete: operations["chains_destroy"];
+    patch: operations["chains_partial_update"];
   };
   "/api/aipe/contexts/": {
-    get: operations["api_aipe_contexts_list"];
-    post: operations["api_aipe_contexts_create"];
+    get: operations["contexts_list"];
+    post: operations["contexts_create"];
   };
   "/api/aipe/contexts/{context_id}/": {
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    get: operations["api_aipe_contexts_retrieve"];
+    get: operations["contexts_retrieve"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    put: operations["api_aipe_contexts_update"];
+    put: operations["contexts_update"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    delete: operations["api_aipe_contexts_destroy"];
+    delete: operations["contexts_destroy"];
     /** @description Concrete view for retrieving, updating or deleting a context instance. */
-    patch: operations["api_aipe_contexts_partial_update"];
+    patch: operations["contexts_partial_update"];
   };
   "/api/aipe/contexts/{context_id}/spans/": {
-    get: operations["api_aipe_contexts_spans_list"];
-    post: operations["api_aipe_contexts_spans_create"];
+    get: operations["contexts_spans_list"];
+    post: operations["contexts_spans_create"];
   };
   "/api/aipe/spans/{span_id}/": {
-    get: operations["api_aipe_spans_retrieve"];
-    put: operations["api_aipe_spans_update"];
-    delete: operations["api_aipe_spans_destroy"];
-    patch: operations["api_aipe_spans_partial_update"];
+    get: operations["spans_retrieve"];
+    put: operations["spans_update"];
+    delete: operations["spans_destroy"];
+    patch: operations["spans_partial_update"];
   };
   "/api/aipe/spans/{span_id}/chains/": {
-    get: operations["api_aipe_spans_chains_list"];
-    post: operations["api_aipe_spans_chains_create"];
+    get: operations["spans_chains_list"];
+    post: operations["spans_chains_create"];
   };
 }
 
@@ -267,7 +267,7 @@ export interface components {
       created_at: string;
       /** Format: date-time */
       updated_at: string;
-      item_role: components["schemas"]["ItemRoleEnum"];
+      item_role?: components["schemas"]["ItemRoleEnum"];
       name?: string | null;
       text_content?: string | null;
       token_count: number;
@@ -321,7 +321,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_chains_retrieve: {
+  chains_retrieve: {
     parameters: {
       path: {
         chain_id: string;
@@ -335,7 +335,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_chains_update: {
+  chains_update: {
     parameters: {
       path: {
         chain_id: string;
@@ -356,7 +356,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_chains_destroy: {
+  chains_destroy: {
     parameters: {
       path: {
         chain_id: string;
@@ -369,7 +369,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_chains_partial_update: {
+  chains_partial_update: {
     parameters: {
       path: {
         chain_id: string;
@@ -390,7 +390,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_contexts_list: {
+  contexts_list: {
     responses: {
       200: {
         content: {
@@ -399,7 +399,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_contexts_create: {
+  contexts_create: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["ConversationContext"];
@@ -416,7 +416,7 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_contexts_retrieve: {
+  contexts_retrieve: {
     parameters: {
       path: {
         context_id: string;
@@ -431,7 +431,7 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_contexts_update: {
+  contexts_update: {
     parameters: {
       path: {
         context_id: string;
@@ -453,7 +453,7 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_contexts_destroy: {
+  contexts_destroy: {
     parameters: {
       path: {
         context_id: string;
@@ -467,7 +467,7 @@ export interface operations {
     };
   };
   /** @description Concrete view for retrieving, updating or deleting a context instance. */
-  api_aipe_contexts_partial_update: {
+  contexts_partial_update: {
     parameters: {
       path: {
         context_id: string;
@@ -488,7 +488,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_contexts_spans_list: {
+  contexts_spans_list: {
     parameters: {
       path: {
         context_id: string;
@@ -502,7 +502,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_contexts_spans_create: {
+  contexts_spans_create: {
     parameters: {
       path: {
         context_id: string;
@@ -523,7 +523,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_retrieve: {
+  spans_retrieve: {
     parameters: {
       path: {
         span_id: string;
@@ -537,7 +537,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_update: {
+  spans_update: {
     parameters: {
       path: {
         span_id: string;
@@ -558,7 +558,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_destroy: {
+  spans_destroy: {
     parameters: {
       path: {
         span_id: string;
@@ -571,7 +571,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_partial_update: {
+  spans_partial_update: {
     parameters: {
       path: {
         span_id: string;
@@ -592,7 +592,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_chains_list: {
+  spans_chains_list: {
     parameters: {
       path: {
         span_id: string;
@@ -606,7 +606,7 @@ export interface operations {
       };
     };
   };
-  api_aipe_spans_chains_create: {
+  spans_chains_create: {
     parameters: {
       path: {
         span_id: string;
