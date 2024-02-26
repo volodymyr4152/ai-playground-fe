@@ -10,15 +10,20 @@ const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
     return <div>Waiting for data</div>
   }
 
+  const getChatClassNames = (chatId: string) => {
+    if (chatId === selectedChatId) {
+      return "border m-1 pr-0 rounded shadow bg-white border-blue-600"
+    } else {
+      return "border m-1 pr-0 rounded shadow bg-white border-blue-100"
+    }
+  }
+
   return <div className="w-full flex flex-col pr-2 pl-1 pt-4 justify-stretch bg-blue-50 h-full">
     <Button className="justify-stretch p-0 mr-1 ml-1" onClick={createChat}>
       New Chat
     </Button>
     {chatList.map((chat) => (
-      <Accordion
-        key={chat.id}
-        className={"border border-gray-900 m-1 pr-0 rounded shadow" + (chat.id === selectedChatId ? " bg-white" : "")}
-      >
+      <Accordion key={chat.id} className={getChatClassNames(chat.id)}>
         <Accordion.Panel>
           <Accordion.Title
             className="m-0 p-2 text-ellipsis overflow-x-hidden overflow-y-hidden"
