@@ -4,7 +4,7 @@ import MessageHeader from "./MsgHeader";
 import Markdown from "react-markdown";
 import codeblocks from "remark-code-blocks";
 
-interface ISystemMessageProps extends Omit<TSystemMessage, 'id'> {
+interface ISystemMessageProps extends TSystemMessage {
   itemId: string;
 }
 

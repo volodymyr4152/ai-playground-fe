@@ -3,7 +3,7 @@ import {TAssistantMessage, TToolCall} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 import {Badge} from "flowbite-react";
 
-interface IAssistantMessageProps extends Omit<TAssistantMessage, 'id'> {
+interface IAssistantMessageProps extends TAssistantMessage {
   itemId: string;
 }
 

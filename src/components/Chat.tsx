@@ -4,23 +4,24 @@ import {
   TAssumption,
   TFact,
   TGoal,
-  TGuideline,
-  TChat
+  TGuideline
 } from '../types/dataTypes';
 import ChatSpan from "./ChatSpan";
 import {useChatCtx} from "../contexts/ChatCtx";
 import {SpanCtxProvider} from "../contexts/SpanCtx";
 
-interface IChatProps {}
+interface IChatProps {
+  className?: string
+}
 
-const Chat: React.FC<IChatProps> = (props) => {
-  const {chatData} = useChatCtx()
+const Chat: React.FC<IChatProps> = ({className}) => {
+  const {chatData, isFetching} = useChatCtx()
   if (!chatData) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="bg-white shadow-sm rounded-lg p-1 flex-grow">
+    <div className={"bg-white flex-grow " + className}>
       <h2 className="text-lg font-bold mb-2">Conversation Context</h2>
       <div className="mb-4">
         <h3 className="text-md font-bold">Goals:</h3>
@@ -63,7 +64,7 @@ const Chat: React.FC<IChatProps> = (props) => {
       <div>
         <h3 className="text-md font-bold">Spans:</h3>
         {chatData.spans.map((span: TChatSpan) => (
-          <SpanCtxProvider key={span.id} spanId={span.id}>
+          <SpanCtxProvider key={span.id} spanId={span.id} pauseFetching={isFetching}>
             <ChatSpan key={span.id} />
           </SpanCtxProvider>
         ))}

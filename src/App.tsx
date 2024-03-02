@@ -1,13 +1,15 @@
 import React from 'react';
+import { Theme } from '@radix-ui/themes';
 import './App.css';
 import MainChatPage from "./pages/MainChatPage";
 import {QueryClient, QueryClientProvider} from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools';
 import {ChatListCtxProvider} from "./contexts/ChatListCtx";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5000
+      staleTime: 1000
     }
   }
 });
@@ -15,9 +17,12 @@ export const queryClient = new QueryClient({
 function App() {
 
   return <QueryClientProvider client={queryClient}>
-    <ChatListCtxProvider>
-      <MainChatPage/>
-    </ChatListCtxProvider>
+    <Theme>
+      <ChatListCtxProvider>
+        <MainChatPage/>
+      </ChatListCtxProvider>
+    </Theme>
+    <ReactQueryDevtools initialIsOpen={true} />
   </QueryClientProvider>;
 }
 

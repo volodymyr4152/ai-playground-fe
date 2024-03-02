@@ -2,11 +2,12 @@ import React from 'react';
 import { TChatCallChain } from '../types/dataTypes';
 import ChatCallChain from './ChatCallChain';
 import {useSpanCtx} from "../contexts/SpanCtx";
+import {ChainCtxProvider} from "../contexts/ChainCtx";
 
 interface IChatSpanProps {}
 
 const ChatSpan: React.FC<IChatSpanProps> = (props) => {
-  const { spanData } = useSpanCtx();
+  const { spanData, isFetching, refreshSpan } = useSpanCtx();
   if (!spanData) {
     return <div>Loading...</div>;
   }
@@ -16,16 +17,15 @@ const ChatSpan: React.FC<IChatSpanProps> = (props) => {
       <h3 className="text-lg font-bold mb-2">SPAN: {spanData.title}</h3>
 
       <div className="space-y-4">
-        {spanData.call_chains.map((chain: TChatCallChain, index: number) => (
-          <ChatCallChain
+        {spanData.call_chains.map((chain: TChatCallChain) => (
+          <ChainCtxProvider
             key={chain.id}
             chainId={chain.id}
-            createdAt={chain.created_at}
-            updatedAt={chain.updated_at}
-            span={chain.span}
-            title={chain.title}
-            items={chain.items}
-          />
+            pauseFetching={isFetching}
+            invalidateParentCtx={refreshSpan}
+          >
+            <ChatCallChain />
+          </ChainCtxProvider>
         ))}
       </div>
     </div>

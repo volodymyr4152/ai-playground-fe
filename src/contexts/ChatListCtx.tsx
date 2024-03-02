@@ -1,13 +1,14 @@
 import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
-import {aipeReqInstance, createNewChat} from "./utils";
+import {aipeReqInstance} from "./utils";
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setChatNestedData} from "./ChatCtx";
 
 interface IChatListCtx {
   chatList?: TChat[]
-  isLoading: boolean
+  isLoading: boolean,
+  isFetching: boolean,
   refreshChatList: () => void
   selectedChatId?: string
   setSelectedChatId: (id: string) => void
@@ -21,27 +22,25 @@ export const useChatListCtx = () => {
 }
 
 export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: 'chats',
     queryFn: (): Promise<TChat[]> => aipeReqInstance.get('contexts/').then((res) => res.data),
-    onSuccess: (chats: TChat[]) => {
-      chats.forEach((chat) => {
-        queryClient.setQueryData(['chat', chat.id], chat);
-        setChatNestedData(chat);
-      })
-    },
+    onSuccess: (chats: TChat[]) => {chats.forEach((chat) => setChatNestedData(chat))},
+    staleTime: 1000 * 60 * 10,
   });
 
   const firstChatId = data?.[0]?.id;
+  // const firstChatId = "b665a26d-a499-44f1-8437-89c2e6db2587";
   const [selectedChatId, setSelectedChatId] = useState<string>(undefined);
 
   const createChat = useMutation({
-    mutationFn: (chat: Partial<TChat>) => createNewChat(chat),
+    mutationFn: (chat: Partial<TChat>) => aipeReqInstance.post('contexts/', chat),
   });
 
   return <ChatListCtx.Provider value={{
     chatList: data,
     isLoading,
+    isFetching,
     refreshChatList: refetch,
     selectedChatId: selectedChatId || firstChatId,
     setSelectedChatId,

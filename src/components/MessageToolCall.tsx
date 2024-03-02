@@ -3,7 +3,7 @@ import {TToolMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 
 
-interface IToolMessageProps extends Omit<TToolMessage, 'id'> {
+interface IToolMessageProps extends TToolMessage {
   itemId: string;
 }
 

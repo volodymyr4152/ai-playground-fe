@@ -1,6 +1,12 @@
 import React from "react";
 import Moment from "react-moment";
-import {Badge} from "flowbite-react";
+import { Root as PopoverRoot, Trigger as PopoverTrigger, Content as PopoverContent } from '@radix-ui/react-popover';
+import { Badge } from "flowbite-react";
+import { MdDeleteForever, MdInfoOutline, MdOutlineEdit } from "react-icons/md";
+import CopyBadge from "./CopyBadge";
+import useHoverClickPopover from "../hooks/useHoverClickPopover";
+import {useChainCtx} from "../contexts/ChainCtx";
+import {useChainItemCtx} from "../contexts/ChainItemCtx";
 
 interface IMessageHeaderProps {
   itemId: string;
@@ -12,6 +18,7 @@ interface IMessageHeaderProps {
   authorName?: string;
   status?: string; // for tool calls
   callId?: string; // for tool calls
+  isEditable?: boolean;
 }
 
 const colorByType = {
@@ -27,20 +34,42 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
   const mainColor = colorByType[props.itemType] || colorByType.default;
   const isNameVisible = (props.authorName !== undefined && props.authorName !== null && props.authorName !== "");
   const isTokenCountVisible = (props.tokenCount !== undefined && props.tokenCount !== null && props.tokenCount > 0);
+  const {isOpen, mouseEnter, mouseLeave, mouseClick} = useHoverClickPopover();
+  const itemCtx = useChainItemCtx()
 
   return (
-    <div className="flex flex-wrap items-center space-x-2" data-role="message-header">
+    <div className="flex flex-wrap items-center space-x-2" data-role="message-header" key={props.itemId}>
+      <div className="hover:bg-red-300 p-1 rounded" onClick={itemCtx.deleteItem}><MdDeleteForever/></div>
       {isNameVisible && <Badge key="authorName" color={mainColor} size="s">Name: {props.authorName}</Badge>}
       <Badge key="type" color={mainColor} size="s" className="min-w-28">{props.itemType}</Badge>
       <Badge key="role" color={mainColor} size="s">{props.itemRole}</Badge>
-      <Badge key="creationTime" color="gray">
-        created:<Moment format="HH:mm:ss">{props.createdAt}</Moment>
-      </Badge>
-      <Badge key="updateTime" color="gray">
-        updated:<Moment format="HH:mm:ss">{props.updatedAt}</Moment>
-      </Badge>
-      {/*<Badge key="systemId" color="gray">ID:{props.itemId}</Badge>*/}
-      {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}
+      <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit /></div>
+      <PopoverRoot open={isOpen}>
+        <PopoverTrigger>
+          <div
+            className={"hover:bg-white p-1 rounded" + (isOpen ? " bg-gray-300" : "")}
+            onMouseEnter={mouseEnter}
+            onMouseLeave={mouseLeave}
+            onClick={mouseClick}
+          ><MdInfoOutline/></div>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div
+            className="flex flex-col h-full gap-1 p-1 bg-white rounded border-gray-400 border"
+            onMouseEnter={mouseEnter}
+            onMouseLeave={mouseLeave}
+          >
+            <CopyBadge key="creationTime" color="gray" copyContent={props.createdAt}>
+              created:<Moment format="HH:mm YYYY-MM-DD">{props.createdAt}</Moment>
+            </CopyBadge>
+            <CopyBadge key="updateTime" color="gray" copyContent={props.updatedAt}>
+              updated:<Moment format="HH:mm YYYY-MM-DD">{props.updatedAt}</Moment>
+            </CopyBadge>
+            <CopyBadge key="systemId" color="gray" copyContent={props.itemId}>ID:{props.itemId}</CopyBadge>
+            {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}
+          </div>
+        </PopoverContent>
+      </PopoverRoot>
     </div>
   );
 }

@@ -3,12 +3,13 @@ import {TAssumption, TChat, TChatItemMultiType, TChatSpan, TFact, TGoal, TGuidel
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setSpanNestedData} from "./SpanCtx";
-import {addSpanItem, aipeReqInstance, createNewSpan} from "./utils";
+import {createSpanChainWithItem, aipeReqInstance} from "./utils";
 
 interface IChatCtx {
   chatData?: TChat
   chatId: string
   isLoading: boolean
+  isFetching: boolean
   refreshChat: () => void
   addChatItem: (item: Partial<TChatItemMultiType>) => void
   addNewSpan: (span: Partial<TChatSpan>) => void
@@ -20,42 +21,51 @@ export const useChatCtx = () => {
   return useContext(ChatCtx);
 };
 
-export const setChatNestedData = (data: TChat) => {
+export const setChatNestedData = (data: TChat, selfUpdate: boolean = true) => {
+  if (selfUpdate) {
+    queryClient.setQueryData(['chat', data.id], data);
+  }
   data.facts.forEach((fact: TFact) => queryClient.setQueryData(['fact', fact.id], fact));
   data.assumptions.forEach((assumption: TAssumption) => queryClient.setQueryData(['assumption', assumption.id], assumption));
   data.goals.forEach((goal: TGoal) => queryClient.setQueryData(['goal', goal.id], goal));
   data.guidelines.forEach((guideline: TGuideline) => queryClient.setQueryData(['guideline', guideline.id], guideline));
-  data.spans.forEach((span: TChatSpan) => {
-    queryClient.setQueryData(['span', span.id], span);
-    setSpanNestedData(span);
-  });
+  data.spans.forEach((span: TChatSpan) => setSpanNestedData(span));
 }
 
-export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: string }) => {
-  const { data, isLoading, refetch } = useQuery({
+export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: string, pauseFetching?: boolean }) => {
+  const { data, isLoading, refetch, isFetching, isSuccess } = useQuery({
     queryKey: ['chat', props.chatId],
     queryFn: () => aipeReqInstance.get(`contexts/${props.chatId}/`).then((res) => res.data),
-    enabled: !!props.chatId,
-    onSuccess: setChatNestedData,
+    enabled: !!props.chatId && !props.pauseFetching,
+    onSuccess: (data) => setChatNestedData(data, false),
   });
 
   const addChatItem = useMutation({
     mutationFn: (item: Partial<TChatItemMultiType>) => {
       const lastSpanId = data?.spans[data.spans.length - 1];
-      return addSpanItem(lastSpanId.id, item);
+      return createSpanChainWithItem(lastSpanId.id, item);
     },
-    onSuccess: (result, variables, context) => { console.log('item added', result); },
+    onSuccess: (result, variables, context) => {
+      console.log('item added', result);
+      const lastSpanId = data?.spans[data.spans.length - 1];
+      return queryClient.invalidateQueries(['span', lastSpanId.id]);
+    },
   });
 
   const addNewSpan = useMutation({
-    mutationFn: (spanInfo: Partial<TChatSpan>) => { return createNewSpan(props.chatId, spanInfo); },
-    onSuccess: (result, variables, context) => { console.log('new span added', result); },
+    mutationFn: (spanInfo: Partial<TChatSpan>) =>
+      aipeReqInstance.post(`contexts/${props.chatId}/spans/`, spanInfo).then((res) => res.data),
+    onSuccess: (result, variables, context) => {
+      console.log('new span added', result);
+      return queryClient.invalidateQueries(['chat', props.chatId]);
+    },
   })
 
   return <ChatCtx.Provider value={{
     chatId: props.chatId,
     chatData: data,
-    isLoading: isLoading,
+    isLoading,
+    isFetching: isFetching || props.pauseFetching || isSuccess,
     refreshChat: refetch,
     addChatItem: addChatItem.mutate,
     addNewSpan: addNewSpan.mutate,

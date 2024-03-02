@@ -1,18 +1,8 @@
 import axios from "axios";
-import {TChat, TChatItemMultiType, TChatSpan} from "../types/dataTypes";
+import {TChatItemMultiType} from "../types/dataTypes";
 
 export const aipeReqInstance = axios.create({baseURL: 'http://localhost:3000/api/aipe/', timeout: 3000,});
 
-export const addSpanItem = (spanId: string, item: Partial<TChatItemMultiType>) => {
+export const createSpanChainWithItem = (spanId: string, item: Partial<TChatItemMultiType>) => {
   return aipeReqInstance.post(`spans/${spanId}/chains/`, {"items": [item]});
-}
-
-
-export const createNewSpan = (chatId: string, spanInfo: Partial<TChatSpan>) => {
-  return aipeReqInstance.post(`contexts/${chatId}/spans/`, spanInfo);
-}
-
-
-export const createNewChat = (chat: Partial<TChat>) => {
-  return aipeReqInstance.post('contexts/', chat);
 }

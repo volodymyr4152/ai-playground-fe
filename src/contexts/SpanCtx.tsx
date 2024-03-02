@@ -1,14 +1,15 @@
 import {createContext, useContext} from "react";
-import {TChatCallChain, TChatItemMultiType, TChatSpan} from "../types/dataTypes";
-import axios from "axios";
+import {TChatCallChain, TChatSpan} from "../types/dataTypes";
 import {useQuery} from "react-query";
 import {queryClient} from "../App";
 import {aipeReqInstance} from "./utils";
+import {setChainNestedData} from "./ChainCtx";
 
 interface ISpanCtx {
   spanData?: TChatSpan
   spanId: string
   isLoading: boolean
+  isFetching: boolean
   refreshSpan: () => void
 }
 
@@ -18,22 +19,28 @@ export const useSpanCtx = () => {
   return useContext(SpanCtx);
 };
 
-export const setSpanNestedData = (span: TChatSpan) => {
+export const setSpanNestedData = (span: TChatSpan, selfUpdate: boolean = true) => {
+  if (selfUpdate) {
+    queryClient.setQueryData(['span', span.id], span);
+  }
   span.call_chains.forEach((callChain: TChatCallChain) => {
-    queryClient.setQueryData(['callChain', callChain.id], callChain)
-    callChain.items.forEach((item: TChatItemMultiType) => queryClient.setQueryData(['chainItem', item.id], item));
+    setChainNestedData(callChain);
   });
 }
 
-export const SpanCtxProvider = (props: { children: React.ReactNode, spanId: string }) => {
-  const { data, isLoading, refetch } = useQuery({
+export const SpanCtxProvider = (props: { children: React.ReactNode, spanId: string, pauseFetching?: boolean }) => {
+  const { data, isLoading, refetch, isFetching, isSuccess } = useQuery({
     queryKey: ['span', props.spanId],
     queryFn: () => aipeReqInstance.get(`spans/${props.spanId}/`).then((res) => res.data),
-    enabled: !!props.spanId,
-    onSuccess: setSpanNestedData,
+    enabled: !!props.spanId && !props.pauseFetching,
+    onSuccess: (data) => setSpanNestedData(data, false)
   });
   return <SpanCtx.Provider value={{
-    spanId: props.spanId, spanData: data, isLoading: isLoading, refreshSpan: refetch,
+    spanId: props.spanId,
+    spanData: data,
+    isLoading,
+    isFetching: isFetching || props.pauseFetching || isSuccess,
+    refreshSpan: refetch,
   }}>
     {props.children}
   </SpanCtx.Provider>;

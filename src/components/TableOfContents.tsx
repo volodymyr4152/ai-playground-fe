@@ -1,4 +1,3 @@
-import {TChat} from "../types/dataTypes";
 import {Accordion, Button} from "flowbite-react";
 import {useChatListCtx} from "../contexts/ChatListCtx";
 
@@ -26,10 +25,10 @@ const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
       <Accordion key={chat.id} className={getChatClassNames(chat.id)}>
         <Accordion.Panel>
           <Accordion.Title
-            className="m-0 p-2 text-ellipsis overflow-x-hidden overflow-y-hidden"
+            className="m-0 p-2 text-ellipsis overflow-x-hidden overflow-hidden"
             onClick={() => setSelectedChatId(chat.id)}
           >
-            ID:&nbsp;{chat.id}
+            <span className="overflow-hidden text-ellipsis inline-block max-w-64">ID:&nbsp;{chat.id}</span>
           </Accordion.Title>
           <Accordion.Content className="m-0 p-0">
             {chat.spans.map((span) => (
