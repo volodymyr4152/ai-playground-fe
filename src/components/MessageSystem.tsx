@@ -22,7 +22,8 @@ const MessageSystem: React.FC<ISystemMessageProps> = ({
       authorName={name}
       tokenCount={token_count}
     />
-    {text_content && <Markdown remarkPlugins={[codeblocks]}>{text_content.replace("\n", "\n\n")}</Markdown>}
+    {/*{text_content && <Markdown remarkPlugins={[codeblocks]}></Markdown>}*/}
+    {text_content && <pre>{text_content}</pre>}
   </div>;
 };
 

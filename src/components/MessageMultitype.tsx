@@ -3,18 +3,13 @@ import MessageAssistant, {IAssistantMessageProps} from "./MessageAssistant";
 import ToolMessage, {IToolMessageProps} from "./MessageToolCall";
 import MessageUser, {IUserMessageProps} from "./MessageUser";
 import MessageSystem, {ISystemMessageProps} from "./MessageSystem";
-import {useChainItemCtx} from "../contexts/ChainItemCtx";
+import {TChatItemMultiType} from "../types/dataTypes";
 
 interface IChatMessageProps {
+  itemData: TChatItemMultiType
 }
 
-const MessageItem: React.FC<IChatMessageProps> = () => {
-  const { isLoading, itemData } = useChainItemCtx();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
+const MessageItem: React.FC<IChatMessageProps> = ({itemData}) => {
   if (itemData.item_type === 'assistant') {
     return <MessageAssistant itemId={itemData.id} {...(itemData as IAssistantMessageProps)} />
   } else if (itemData.item_type === 'tool') {

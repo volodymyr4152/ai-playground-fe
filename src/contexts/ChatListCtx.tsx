@@ -7,8 +7,6 @@ import {setChatNestedData} from "./ChatCtx";
 
 interface IChatListCtx {
   chatList?: TChat[]
-  isLoading: boolean,
-  isFetching: boolean,
   refreshChatList: () => void
   selectedChatId?: string
   setSelectedChatId: (id: string) => void
@@ -39,8 +37,6 @@ export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
 
   return <ChatListCtx.Provider value={{
     chatList: data,
-    isLoading,
-    isFetching,
     refreshChatList: refetch,
     selectedChatId: selectedChatId || firstChatId,
     setSelectedChatId,
