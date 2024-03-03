@@ -39,11 +39,10 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
 
   return (
     <div className="flex flex-wrap items-center space-x-2" data-role="message-header" key={props.itemId}>
-      <div className="hover:bg-red-300 p-1 rounded" onClick={itemCtx.deleteItem}><MdDeleteForever/></div>
       {isNameVisible && <Badge key="authorName" color={mainColor} size="s">Name: {props.authorName}</Badge>}
       <Badge key="type" color={mainColor} size="s" className="min-w-28">{props.itemType}</Badge>
       <Badge key="role" color={mainColor} size="s">{props.itemRole}</Badge>
-      <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit /></div>
+      <div className="p-3 flex-grow"></div>
       <PopoverRoot open={isOpen}>
         <PopoverTrigger>
           <div
@@ -70,6 +69,9 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
           </div>
         </PopoverContent>
       </PopoverRoot>
+      <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit/></div>
+      <div className="py-3 mx-1 rounded"></div>
+      <div className="hover:bg-red-300 p-1 rounded" onClick={itemCtx.deleteItem}><MdDeleteForever/></div>
     </div>
   );
 }

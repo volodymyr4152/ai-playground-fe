@@ -22,7 +22,7 @@ function App() {
         <MainChatPage/>
       </ChatListCtxProvider>
     </Theme>
-    <ReactQueryDevtools initialIsOpen={true} />
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>;
 }
 
