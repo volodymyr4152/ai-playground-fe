@@ -62,7 +62,7 @@ export const ChainCtxProvider = (props: IChainCtxProviderProps) => {
     isFetching: isFetching || props.pauseFetching || isSuccess,
     refreshChain: refetch,
     deleteChain: () => deleteChain.mutate(),
-
+    genNewItem: () => genNewItem.mutate(),
   }}>
     {props.children}
   </ChainCtx.Provider>
