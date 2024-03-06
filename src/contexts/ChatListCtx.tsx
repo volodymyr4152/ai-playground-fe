@@ -1,6 +1,6 @@
 import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
-import {aipeReqInstance} from "./utils";
+import {aipeReqInstance, QKP} from "./utils";
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
 import {setChatNestedData} from "./ChatCtx";
@@ -23,7 +23,7 @@ export const useChatListCtx = () => {
 
 export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
   const { data, isLoading, isFetching, refetch } = useQuery({
-    queryKey: 'chats',
+    queryKey: QKP.chatList,
     queryFn: (): Promise<TChat[]> => aipeReqInstance.get('contexts/').then((res) => res.data),
     onSuccess: (chats: TChat[]) => {chats.forEach((chat) => setChatNestedData(chat))},
     staleTime: 1000 * 60 * 10,

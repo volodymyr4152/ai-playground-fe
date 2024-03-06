@@ -69,6 +69,8 @@ const Chat: React.FC<IChatProps> = ({className}) => {
           </SpanCtxProvider>
         ))}
       </div>
+
+      <div className="w-full h-96"></div>
     </div>
   );
 };

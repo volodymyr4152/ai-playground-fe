@@ -2,7 +2,7 @@ import {createContext, useContext} from "react";
 import {TChatItemMultiType, TChatSpan} from "../types/dataTypes";
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
-import {aipeReqInstance} from "./utils";
+import {aipeReqInstance, QKP} from "./utils";
 
 interface IChainItemCtx {
   itemData?: TChatItemMultiType
@@ -21,7 +21,7 @@ export const useChainItemCtx = () => {
 
 export const setItemData = (item: TChatItemMultiType, selfUpdate: boolean = true) => {
   if (selfUpdate) {
-    queryClient.setQueryData(['chainItem', item.id], item);
+    queryClient.setQueryData([QKP.chainItem, item.id], item);
   }
 }
 
@@ -34,7 +34,7 @@ export interface IChainItemCtxProviderProps {
 
 export const ChainItemCtxProvider = (props: IChainItemCtxProviderProps) => {
   const { data, isLoading, refetch, isFetching } = useQuery({
-    queryKey: ['chainItem', props.itemId],
+    queryKey: [QKP.chainItem, props.itemId],
     queryFn: () => aipeReqInstance.get(`items/${props.itemId}/`).then((res) => res.data as TChatItemMultiType),
     enabled: !!props.itemId && !props.pauseFetching,
   });

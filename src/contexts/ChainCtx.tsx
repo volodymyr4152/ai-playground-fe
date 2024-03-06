@@ -2,7 +2,7 @@ import {createContext, useContext} from "react";
 import {TChatCallChain, TChatItemMultiType, TChatSpan} from "../types/dataTypes";
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
-import {aipeReqInstance} from "./utils";
+import {aipeReqInstance, QKP} from "./utils";
 import {setItemData} from "./ChainItemCtx";
 
 interface IChainCtx {
@@ -30,14 +30,14 @@ export const useChainCtx = () => {
 
 export const setChainNestedData = (chain: TChatCallChain, selfUpdate: boolean = true) => {
   if (selfUpdate) {
-    queryClient.setQueryData(['callChain', chain.id], chain);
+    queryClient.setQueryData([QKP.chain, chain.id], chain);
   }
   chain.items.forEach((item: TChatItemMultiType) => setItemData(item));
 }
 
 export const ChainCtxProvider = (props: IChainCtxProviderProps) => {
   const { data, isLoading, refetch, isFetching, isSuccess } = useQuery({
-    queryKey: ['callChain', props.chainId],
+    queryKey: [QKP.chain, props.chainId],
     queryFn: () => aipeReqInstance.get(`chains/${props.chainId}/`).then((res) => res.data),
     enabled: !!props.chainId && !props.pauseFetching,
     onSuccess: (data) => setChainNestedData(data, false),
