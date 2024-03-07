@@ -7,7 +7,7 @@ import {MdDeleteForever, MdInfoOutline} from "react-icons/md";
 import useHoverClickPopover from "../hooks/useHoverClickPopover";
 import CopyBadge from "./CopyBadge";
 import {TChatCallChain} from "../types/dataTypes";
-import {aipeReqInstance} from "../contexts/utils";
+import {aipeReqInstance} from "../utils";
 
 interface IChatCallChainProps {
   spanId: string;

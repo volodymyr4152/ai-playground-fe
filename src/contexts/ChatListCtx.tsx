@@ -1,8 +1,9 @@
 import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
-import {aipeReqInstance, QKP} from "./utils";
-import {useMutation, useQuery} from "react-query";
-import {setChatNestedData} from "./ChatCtx";
+import {useMutation} from "@tanstack/react-query";
+import {aipeReqInstance} from "../utils";
+import {useChatListQuery} from "../hooks/useChatsApi";
+
 
 interface IChatListCtx {
   chatList?: TChat[]
@@ -19,12 +20,7 @@ export const useChatListCtx = () => {
 }
 
 export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
-  const { data, refetch } = useQuery({
-    queryKey: QKP.chatList,
-    queryFn: (): Promise<TChat[]> => aipeReqInstance.get('contexts/').then((res) => res.data),
-    onSuccess: (chats: TChat[]) => {chats.forEach((chat) => setChatNestedData(chat))},
-    staleTime: 1000 * 60 * 10,
-  });
+  const { data, refetch } = useChatListQuery()
 
   const firstChatId = data?.[0]?.id;
   // const firstChatId = "b665a26d-a499-44f1-8437-89c2e6db2587";

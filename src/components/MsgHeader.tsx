@@ -5,7 +5,7 @@ import { Badge } from "flowbite-react";
 import { MdDeleteForever, MdInfoOutline, MdOutlineEdit } from "react-icons/md";
 import CopyBadge from "./CopyBadge";
 import useHoverClickPopover from "../hooks/useHoverClickPopover";
-import {aipeReqInstance} from "../contexts/utils";
+import {aipeReqInstance} from "../utils";
 
 interface IMessageHeaderProps {
   itemId: string;

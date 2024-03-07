@@ -1,8 +1,9 @@
 import {createContext, useCallback, useContext, useMemo} from "react";
 import {TAssumption, TChat, TChatItemMultiType, TChatSpan, TFact, TGoal, TGuideline} from "../types/dataTypes";
-import {useMutation, useQuery} from "react-query";
-import {queryClient} from "../App";
-import {aipeReqInstance, QKP} from "./utils";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useChatQuery} from "../hooks/useChatsApi";
+import {aipeReqInstance, queryKeys} from "../utils";
+import {data} from "autoprefixer";
 
 interface IChatCtx {
   chatData?: TChat
@@ -17,54 +18,21 @@ export const useChatCtx = () => {
   return useContext(ChatCtx);
 };
 
-export const setChatNestedData = (data: TChat, selfUpdate: boolean = true) => {
-  if (selfUpdate) {
-    queryClient.setQueryData([QKP.chat, data.id], data);
-  }
-  data.facts.forEach((fact: TFact) => queryClient.setQueryData([QKP.fact, fact.id], fact));
-  data.assumptions.forEach((assumption: TAssumption) => queryClient.setQueryData([QKP.assumption, assumption.id], assumption));
-  data.goals.forEach((goal: TGoal) => queryClient.setQueryData([QKP.goal, goal.id], goal));
-  data.guidelines.forEach((guideline: TGuideline) => queryClient.setQueryData([QKP.guideline, guideline.id], guideline));
-  data?.spans.forEach((span: TChatSpan) => {
-    queryClient.setQueryData([QKP.span, span.id], span);
-    span.call_chains.forEach((chain) => {
-      queryClient.setQueryData([QKP.chain, chain.id], chain);
-      chain.items.forEach((item) => queryClient.setQueryData([QKP.chainItem, item.id], item));
-    });
-  });
-}
 
 export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: string }) => {
-  const chatApiFn = useCallback(
-    () => aipeReqInstance.get(`contexts/${props.chatId}/`).then((res) => res.data),
-    [props.chatId]
-  );
-  const chatApiCallSuccess = useCallback(
-    (data) => setChatNestedData(data, false),
-    []
-  );
+  const queryClient = useQueryClient();
+  const { data } = useChatQuery(props.chatId);
 
-  const { data } = useQuery({
-    queryKey: [QKP.chat, props.chatId],
-    queryFn: chatApiFn,
-    enabled: !!props.chatId,
-    onSuccess: chatApiCallSuccess,
-    notifyOnChangeProps: ['data']
-  });
-
+  const lastSpanId = data?.spans[data.spans.length - 1].id;
   const addChatItemApiFn = useCallback(
     (item: Partial<TChatItemMultiType>) => {
-      const lastSpanId = data?.spans[data.spans.length - 1];
-      return aipeReqInstance.post(`spans/${lastSpanId.id}/chains/`, {"items": [item]}).then((res) => res.data);
-    }, [data]
+      return aipeReqInstance.post(`spans/${lastSpanId}/chains/`, {"items": [item]}).then((res) => res.data);
+    }, [lastSpanId]
   );
-
   const addChatItemSuccessFn = useCallback(
     (result, variables, context) => {
-      console.log('item added', result);
-      const lastSpanId = data?.spans[data.spans.length - 1];
-      return queryClient.invalidateQueries([QKP.span, lastSpanId.id]);
-    }, [data]
+      return queryClient.invalidateQueries({queryKey: queryKeys.span(lastSpanId), exact: true});
+    }, [queryClient, lastSpanId]
   );
 
   const addChatItem = useMutation({
@@ -77,8 +45,8 @@ export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: stri
       aipeReqInstance.post(`contexts/${props.chatId}/spans/`, spanInfo).then((res) => res.data),
     onSuccess: (result, variables, context) => {
       console.log('new span added', result);
-      return queryClient.invalidateQueries([QKP.chat, props.chatId]);
-    },
+      return queryClient.invalidateQueries({queryKey: queryKeys.chat(props.chatId), exact: true});
+    }
   });
 
   const chatContextMemo = useMemo(() => ({
