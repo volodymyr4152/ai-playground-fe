@@ -1,16 +1,12 @@
-import {createContext, useContext} from "react";
+import {createContext, useCallback, useContext, useMemo} from "react";
 import {TAssumption, TChat, TChatItemMultiType, TChatSpan, TFact, TGoal, TGuideline} from "../types/dataTypes";
 import {useMutation, useQuery} from "react-query";
 import {queryClient} from "../App";
-import {setSpanNestedData} from "./SpanCtx";
 import {aipeReqInstance, QKP} from "./utils";
 
 interface IChatCtx {
   chatData?: TChat
   chatId: string
-  isLoading: boolean
-  isFetching: boolean
-  refreshChat: () => void
   addChatItem: (item: Partial<TChatItemMultiType>) => void
   addNewSpan: (span: Partial<TChatSpan>) => void
 }
@@ -29,27 +25,51 @@ export const setChatNestedData = (data: TChat, selfUpdate: boolean = true) => {
   data.assumptions.forEach((assumption: TAssumption) => queryClient.setQueryData([QKP.assumption, assumption.id], assumption));
   data.goals.forEach((goal: TGoal) => queryClient.setQueryData([QKP.goal, goal.id], goal));
   data.guidelines.forEach((guideline: TGuideline) => queryClient.setQueryData([QKP.guideline, guideline.id], guideline));
-  data.spans.forEach((span: TChatSpan) => setSpanNestedData(span));
+  data?.spans.forEach((span: TChatSpan) => {
+    queryClient.setQueryData([QKP.span, span.id], span);
+    span.call_chains.forEach((chain) => {
+      queryClient.setQueryData([QKP.chain, chain.id], chain);
+      chain.items.forEach((item) => queryClient.setQueryData([QKP.chainItem, item.id], item));
+    });
+  });
 }
 
-export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: string, pauseFetching?: boolean }) => {
-  const { data, isLoading, refetch, isFetching, isSuccess } = useQuery({
+export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: string }) => {
+  const chatApiFn = useCallback(
+    () => aipeReqInstance.get(`contexts/${props.chatId}/`).then((res) => res.data),
+    [props.chatId]
+  );
+  const chatApiCallSuccess = useCallback(
+    (data) => setChatNestedData(data, false),
+    []
+  );
+
+  const { data } = useQuery({
     queryKey: [QKP.chat, props.chatId],
-    queryFn: () => aipeReqInstance.get(`contexts/${props.chatId}/`).then((res) => res.data),
-    enabled: !!props.chatId && !props.pauseFetching,
-    onSuccess: (data) => setChatNestedData(data, false),
+    queryFn: chatApiFn,
+    enabled: !!props.chatId,
+    onSuccess: chatApiCallSuccess,
+    notifyOnChangeProps: ['data']
   });
 
-  const addChatItem = useMutation({
-    mutationFn: (item: Partial<TChatItemMultiType>) => {
+  const addChatItemApiFn = useCallback(
+    (item: Partial<TChatItemMultiType>) => {
       const lastSpanId = data?.spans[data.spans.length - 1];
       return aipeReqInstance.post(`spans/${lastSpanId.id}/chains/`, {"items": [item]}).then((res) => res.data);
-    },
-    onSuccess: (result, variables, context) => {
+    }, [data]
+  );
+
+  const addChatItemSuccessFn = useCallback(
+    (result, variables, context) => {
       console.log('item added', result);
       const lastSpanId = data?.spans[data.spans.length - 1];
-      return queryClient.invalidateQueries(['span', lastSpanId.id]);
-    },
+      return queryClient.invalidateQueries([QKP.span, lastSpanId.id]);
+    }, [data]
+  );
+
+  const addChatItem = useMutation({
+    mutationFn: addChatItemApiFn,
+    onSuccess: addChatItemSuccessFn,
   });
 
   const addNewSpan = useMutation({
@@ -57,19 +77,18 @@ export const ChatCtxProvider = (props: { children: React.ReactNode, chatId: stri
       aipeReqInstance.post(`contexts/${props.chatId}/spans/`, spanInfo).then((res) => res.data),
     onSuccess: (result, variables, context) => {
       console.log('new span added', result);
-      return queryClient.invalidateQueries(['chat', props.chatId]);
+      return queryClient.invalidateQueries([QKP.chat, props.chatId]);
     },
-  })
+  });
 
-  return <ChatCtx.Provider value={{
+  const chatContextMemo = useMemo(() => ({
     chatId: props.chatId,
     chatData: data,
-    isLoading,
-    isFetching: isFetching || props.pauseFetching || isSuccess,
-    refreshChat: refetch,
     addChatItem: addChatItem.mutate,
     addNewSpan: addNewSpan.mutate,
-  }}>
+  }), [props.chatId, data, addChatItem, addNewSpan]);
+
+  return <ChatCtx.Provider value={chatContextMemo}>
     {props.children}
   </ChatCtx.Provider>;
 }

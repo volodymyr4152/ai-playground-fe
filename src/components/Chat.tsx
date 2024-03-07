@@ -8,14 +8,13 @@ import {
 } from '../types/dataTypes';
 import ChatSpan from "./ChatSpan";
 import {useChatCtx} from "../contexts/ChatCtx";
-import {SpanCtxProvider} from "../contexts/SpanCtx";
 
 interface IChatProps {
   className?: string
 }
 
 const Chat: React.FC<IChatProps> = ({className}) => {
-  const {chatData, isFetching} = useChatCtx()
+  const {chatData} = useChatCtx();
   if (!chatData) {
     return <div>Loading...</div>;
   }
@@ -64,9 +63,7 @@ const Chat: React.FC<IChatProps> = ({className}) => {
       <div>
         <h3 className="text-md font-bold">Spans:</h3>
         {chatData.spans.map((span: TChatSpan) => (
-          <SpanCtxProvider key={span.id} spanId={span.id} pauseFetching={isFetching}>
-            <ChatSpan key={span.id} />
-          </SpanCtxProvider>
+          <ChatSpan key={span.id} spanId={span.id} spanData={span}/>
         ))}
       </div>
 

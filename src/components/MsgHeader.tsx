@@ -1,12 +1,11 @@
-import React from "react";
+import React, {useCallback} from "react";
 import Moment from "react-moment";
 import { Root as PopoverRoot, Trigger as PopoverTrigger, Content as PopoverContent } from '@radix-ui/react-popover';
 import { Badge } from "flowbite-react";
 import { MdDeleteForever, MdInfoOutline, MdOutlineEdit } from "react-icons/md";
 import CopyBadge from "./CopyBadge";
 import useHoverClickPopover from "../hooks/useHoverClickPopover";
-import {useChainCtx} from "../contexts/ChainCtx";
-import {useChainItemCtx} from "../contexts/ChainItemCtx";
+import {aipeReqInstance} from "../contexts/utils";
 
 interface IMessageHeaderProps {
   itemId: string;
@@ -35,7 +34,10 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
   const isNameVisible = (props.authorName !== undefined && props.authorName !== null && props.authorName !== "");
   const isTokenCountVisible = (props.tokenCount !== undefined && props.tokenCount !== null && props.tokenCount > 0);
   const {isOpen, mouseEnter, mouseLeave, mouseClick} = useHoverClickPopover();
-  const itemCtx = useChainItemCtx()
+  const deleteItem = useCallback(
+    () => aipeReqInstance.delete(`items/${props.itemId}/`),
+    [props.itemId]
+  )
 
   return (
     <div className="flex flex-wrap items-center space-x-2" data-role="message-header" key={props.itemId}>
@@ -71,7 +73,7 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
       </PopoverRoot>
       <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit/></div>
       <div className="py-3 mx-1 rounded"></div>
-      <div className="hover:bg-red-300 p-1 rounded" onClick={itemCtx.deleteItem}><MdDeleteForever/></div>
+      <div className="hover:bg-red-300 p-1 rounded" onClick={deleteItem}><MdDeleteForever/></div>
     </div>
   );
 }

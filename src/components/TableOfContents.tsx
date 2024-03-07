@@ -4,8 +4,8 @@ import {useChatListCtx} from "../contexts/ChatListCtx";
 interface ITableOfContentsProps {}
 
 const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
-  const {chatList, isLoading, selectedChatId, createChat, setSelectedChatId} = useChatListCtx();
-  if (!chatList || isLoading) {
+  const {chatList, selectedChatId, createChat, setSelectedChatId} = useChatListCtx();
+  if (!chatList) {
     return <div>Waiting for data</div>
   }
 

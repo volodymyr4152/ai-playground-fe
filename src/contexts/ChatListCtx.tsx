@@ -2,13 +2,10 @@ import {createContext, useContext, useState} from "react";
 import {TChat} from "../types/dataTypes";
 import {aipeReqInstance, QKP} from "./utils";
 import {useMutation, useQuery} from "react-query";
-import {queryClient} from "../App";
 import {setChatNestedData} from "./ChatCtx";
 
 interface IChatListCtx {
   chatList?: TChat[]
-  isLoading: boolean,
-  isFetching: boolean,
   refreshChatList: () => void
   selectedChatId?: string
   setSelectedChatId: (id: string) => void
@@ -22,7 +19,7 @@ export const useChatListCtx = () => {
 }
 
 export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
-  const { data, isLoading, isFetching, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: QKP.chatList,
     queryFn: (): Promise<TChat[]> => aipeReqInstance.get('contexts/').then((res) => res.data),
     onSuccess: (chats: TChat[]) => {chats.forEach((chat) => setChatNestedData(chat))},
@@ -39,8 +36,6 @@ export const ChatListCtxProvider = (props: { children: React.ReactNode }) => {
 
   return <ChatListCtx.Provider value={{
     chatList: data,
-    isLoading,
-    isFetching,
     refreshChatList: refetch,
     selectedChatId: selectedChatId || firstChatId,
     setSelectedChatId,

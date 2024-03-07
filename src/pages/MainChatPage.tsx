@@ -7,15 +7,12 @@ import {useChatListCtx} from "../contexts/ChatListCtx";
 
 
 function MainChatPage() {
-  const {chatList, isLoading, selectedChatId, isFetching} = useChatListCtx();
-  if (isLoading) {
+  const {chatList, selectedChatId} = useChatListCtx();
+  if (!chatList) {
     return <div>Loading...</div>;
   }
-  if (!chatList) {
-    return <div>Failed to load chats</div>;
-  }
   return (
-    <ChatCtxProvider chatId={selectedChatId} pauseFetching={isFetching}>
+    <ChatCtxProvider chatId={selectedChatId}>
       <div className="MainChatPage flex flex-row flex-nowrap flex-auto max-h-screen overflow-y-auto h-screen">
         <div className="max-w-80 basis-1/4 max-h-full overflow-y-auto overflow-x-hidden">
           <TableOfContents/>

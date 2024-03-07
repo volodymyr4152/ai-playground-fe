@@ -1,21 +1,28 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import MessageItem from "./MessageMultitype";
 import {Badge, Button} from "flowbite-react";
 import Moment from "react-moment";
 import {Content as PopoverContent, Root as PopoverRoot, Trigger as PopoverTrigger} from "@radix-ui/react-popover";
 import {MdDeleteForever, MdInfoOutline} from "react-icons/md";
-import {useChainCtx} from "../contexts/ChainCtx";
-import {ChainItemCtxProvider} from "../contexts/ChainItemCtx";
 import useHoverClickPopover from "../hooks/useHoverClickPopover";
 import CopyBadge from "./CopyBadge";
+import {TChatCallChain} from "../types/dataTypes";
+import {aipeReqInstance} from "../contexts/utils";
 
 interface IChatCallChainProps {
+  spanId: string;
+  chainId: string;
+  chainData?: TChatCallChain;
 }
 
-const ChatCallChain: React.FC<IChatCallChainProps> = () => {
-  const { chainId, chainData, isLoading, isFetching, refreshChain, deleteChain } = useChainCtx();
+const ChatCallChain: React.FC<IChatCallChainProps> = ({chainId, chainData}) => {
   const {isOpen, mouseEnter, mouseLeave, mouseClick} = useHoverClickPopover();
-  if (isLoading) {
+  const deleteChain = useCallback(
+    () => aipeReqInstance.delete(`chains/${chainId}/`),
+    [chainId]
+  );
+
+  if (!chainId || !chainData) {
     return <div>Loading...</div>;
   }
   return (
@@ -64,9 +71,7 @@ const ChatCallChain: React.FC<IChatCallChainProps> = () => {
       </div>
       <div className="border-t pt-2">
         {chainData.items.map((item) =>
-          <ChainItemCtxProvider key={item.id} itemId={item.id} pauseFetching={isFetching} invalidateParentCtx={refreshChain}>
-            <MessageItem key={item.id}/>
-          </ChainItemCtxProvider>
+          <MessageItem key={item.id} itemData={item}/>
         )}
       </div>
     </div>
