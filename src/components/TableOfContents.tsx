@@ -1,10 +1,16 @@
 import {Accordion, Button} from "flowbite-react";
-import {useChatListCtx} from "../contexts/ChatListCtx";
+import {useSelectedChatInfo} from "../hooks/chatStateHooks";
+import {useCallback} from "react";
+import {useAddNewChat, useChatListQuery} from "../hooks/useChatsApi";
 
 interface ITableOfContentsProps {}
 
 const TableOfContents: React.FC<ITableOfContentsProps> = (props) => {
-  const {chatList, selectedChatId, createChat, setSelectedChatId} = useChatListCtx();
+  const {data: chatList} = useChatListQuery();
+  const addChatMutation = useAddNewChat();
+  const createChat = useCallback(() => addChatMutation.mutate({}), [addChatMutation]);
+  const {selectedChatId, setSelectedChatId} = useSelectedChatInfo();
+
   if (!chatList) {
     return <div>Waiting for data</div>
   }

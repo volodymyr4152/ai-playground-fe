@@ -1,22 +1,7 @@
-import {TChat, TChatCallChain, TChatItemMultiType, TChatSpan} from "../types/dataTypes";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {aipeReqInstance, queryKeys} from "../utils";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import type {UseQueryResult} from "@tanstack/react-query/src/types";
-
-
-const setChainItemQueryData = (item: TChatItemMultiType, queryClient: any) => {
-  queryClient.setQueryData(queryKeys.chainItem(item.id), item);
-}
-
-const setChainQueryData = (chain: TChatCallChain, queryClient: any) => {
-  queryClient.setQueryData(queryKeys.chain(chain.id), chain);
-  chain.items.forEach((item: any) => setChainItemQueryData(item, queryClient));
-}
-
-const setSpanQueryData = (span: TChatSpan, queryClient: any) => {
-  queryClient.setQueryData(queryKeys.span(span.id), span);
-  span.call_chains.forEach((chain: any) => setChainQueryData(chain, queryClient));
-}
+import {TChat} from "../types/dataTypes";
+import {setSpanQueryData} from "./useSpanApi";
 
 const setChatQueryData = (chat: TChat, queryClient: any) => {
   queryClient.setQueryData(queryKeys.chat(chat.id), chat);
@@ -34,7 +19,6 @@ const setChatQueryData = (chat: TChat, queryClient: any) => {
     queryClient.setQueryData(queryKeys.guideline(guideline.id), guideline)
   );
 }
-
 export const useChatListQuery = (queryParams = undefined) => {
   const queryClient = useQueryClient();
   return useQuery<TChat[]>({
@@ -46,50 +30,29 @@ export const useChatListQuery = (queryParams = undefined) => {
   });
 }
 
+interface IAddNewChat {
+  chatInfo?: Partial<TChat>;
+}
 
+export const useAddNewChat = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({chatInfo}: IAddNewChat = undefined) =>
+      aipeReqInstance.post('contexts/', chatInfo).then((res) => res.data),
+    onSettled: (data, error, variables: IAddNewChat, context) => {
+      return queryClient.invalidateQueries({queryKey: queryKeys.chatList(), exact: true});
+    }
+  });
+}
 export const useChatQuery = (chatId: string, queryParams = undefined) => {
   const queryClient = useQueryClient();
   return useQuery<TChat>({
     queryKey: queryKeys.chat(chatId),
     queryFn: () => aipeReqInstance.get(`contexts/${chatId}/`).then((res) => res.data),
     enabled: !!chatId,
+    staleTime: Infinity,
     onSuccess: (chat: TChat) => setChatQueryData(chat, queryClient),
-    ...queryParams ?? {}
-  });
-}
-
-
-export const useSpanQuery = (spanId: string, queryParams = undefined) => {
-  const queryClient = useQueryClient();
-  return useQuery<TChatSpan>({
-    queryKey: queryKeys.span(spanId),
-    queryFn: () => aipeReqInstance.get(`spans/${spanId}/`).then((res) => res.data),
-    enabled: !!spanId,
-    onSuccess: (span: TChatSpan) => setSpanQueryData(span, queryClient),
-    ...queryParams ?? {}
-  });
-}
-
-
-export const useChainQuery = (chainId: string, queryParams = undefined) => {
-  const queryClient = useQueryClient();
-  return useQuery<TChatCallChain>({
-    queryKey: queryKeys.chain(chainId),
-    queryFn: () => aipeReqInstance.get(`chains/${chainId}/`).then((res) => res.data),
-    enabled: !!chainId,
-    onSuccess: (chain: TChatCallChain) => setChainQueryData(chain, queryClient),
-    ...queryParams ?? {}
-  });
-}
-
-
-export const useChainItemQuery = (itemId: string, queryParams = undefined) => {
-  const queryClient = useQueryClient();
-  return useQuery<TChatItemMultiType>({
-    queryKey: queryKeys.chainItem(itemId),
-    queryFn: () => aipeReqInstance.get(`chainItems/${itemId}/`).then((res) => res.data),
-    enabled: !!itemId,
-    onSuccess: (item: TChatItemMultiType) => setChainItemQueryData(item, queryClient),
     ...queryParams ?? {}
   });
 }

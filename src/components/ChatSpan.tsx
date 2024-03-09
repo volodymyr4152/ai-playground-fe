@@ -2,12 +2,16 @@ import React from 'react';
 import {TChatCallChain, TChatSpan} from '../types/dataTypes';
 import ChatCallChain from './ChatCallChain';
 
+import {useSpanQuery} from "../hooks/useSpanApi";
+
 interface IChatSpanProps {
   spanId: string;
   spanData?: TChatSpan;
 }
 
-const ChatSpan: React.FC<IChatSpanProps> = ({spanId, spanData}) => {
+const ChatSpan: React.FC<IChatSpanProps> = ({spanId, spanData: initialSpanData}) => {
+  const {data: spanData} = useSpanQuery(spanId, {initialData: initialSpanData});
+
   if (!spanData || !spanId) {
     return <div>Loading...</div>;
   }

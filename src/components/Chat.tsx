@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   TChatSpan,
   TAssumption,
@@ -7,14 +7,16 @@ import {
   TGuideline
 } from '../types/dataTypes';
 import ChatSpan from "./ChatSpan";
-import {useChatCtx} from "../contexts/ChatCtx";
+import {useChatQuery} from "../hooks/useChatsApi";
 
 interface IChatProps {
+  chatId: string
   className?: string
 }
 
-const Chat: React.FC<IChatProps> = ({className}) => {
-  const {chatData} = useChatCtx();
+const Chat: React.FC<IChatProps> = ({chatId, className}) => {
+  const {data: chatData} = useChatQuery(chatId);
+
   if (!chatData) {
     return <div>Loading...</div>;
   }
