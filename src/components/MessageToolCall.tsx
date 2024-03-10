@@ -9,16 +9,16 @@ interface IToolMessageProps extends TToolMessage {
 
 
 const ToolMessage: React.FC<IToolMessageProps> = ({
-                                                    itemId,
-                                                    created_at,
-                                                    updated_at,
-                                                    item_role,
-                                                    call_request,
-                                                    token_count,
-                                                    item_type
-                                                  }) => {
+  itemId,
+  created_at,
+  updated_at,
+  item_role,
+  call_request,
+  token_count,
+  item_type
+}) => {
   return (
-    <div className="bg-green-50 p-2 mb-1 rounded shadow">
+    <div className="bg-green-50 p-2 rounded shadow">
       <MessageHeader
         itemId={itemId}
         createdAt={created_at}

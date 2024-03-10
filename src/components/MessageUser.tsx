@@ -8,7 +8,7 @@ interface IUserMessageProps extends TUserMessage {
 
 const MessageUser: React.FC<IUserMessageProps> = (props) => {
   return (
-    <div className="bg-yellow-50 p-2 mb-1 rounded shadow">
+    <div className="bg-yellow-50 p-2 rounded shadow">
       <MessageHeader
         itemId={props.itemId}
         createdAt={props.created_at}

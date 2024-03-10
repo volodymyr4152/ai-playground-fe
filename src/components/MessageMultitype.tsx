@@ -35,7 +35,7 @@ const MessageItem: React.FC<IChatMessageProps> = ({ itemId }) => {
       <MessageSystem itemId={itemData.id} {...(itemData as ISystemMessageProps)} />
     </ChainItemContextProvider>
   } else {
-    return <div className="mb-2 bg-red-400 p-2">
+    return <div className="bg-red-400 p-2">
       <p>Message Type: {itemData.item_type}</p>
     </div>
   }

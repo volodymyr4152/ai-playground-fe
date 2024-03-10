@@ -7,7 +7,7 @@ const useHoverClickPopover = () => {
 
   useEffect(() => {
     if (isOpen !== isOpenTarget) {
-      const timeout = setTimeout(() => setIsOpen(isOpenTarget), 200);
+      const timeout = setTimeout(() => setIsOpen(isOpenTarget), 100);
       return () => clearTimeout(timeout);
     }
   }, [isOpenTarget, isOpen]);

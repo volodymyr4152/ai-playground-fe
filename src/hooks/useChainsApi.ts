@@ -12,7 +12,6 @@ export const setChainQueryData = (chain: TChatCallChain, queryClient: any, selfU
 
 export const useChainQuery = (chainId: string, queryParams = undefined) => {
   const queryClient = useQueryClient();
-  const randomWaitOffset = Math.random() * 1000 * 20;
   return useQuery<TChatCallChain>({
     queryKey: queryKeys.chain(chainId),
     queryFn: () => aipeReqInstance.get(`chains/${chainId}/`).then((res) => {
@@ -20,7 +19,7 @@ export const useChainQuery = (chainId: string, queryParams = undefined) => {
       return res.data;
     }),
     enabled: !!chainId,
-    staleTime: 1000 * 60 * 10 + randomWaitOffset,
+    staleTime: Infinity,
     ...queryParams ?? {}
   });
 }

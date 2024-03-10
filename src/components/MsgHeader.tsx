@@ -45,12 +45,11 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
   return (
     <div className="flex flex-wrap items-center space-x-2" data-role="message-header" key={props.itemId}>
       {isNameVisible && <Badge key="authorName" color={mainColor} size="s">Name: {props.authorName}</Badge>}
-      <Badge key="type" color={mainColor} size="s" className="min-w-28">{props.itemType}</Badge>
-      <Badge key="role" color={mainColor} size="s">{props.itemRole}</Badge>
-      <div className="p-3 flex-grow"></div>
+      <Badge key="type" color={mainColor} size="s" className="min-w-20">{props.itemType}</Badge>
       <ModPopover
         triggerChild={<MdInfoOutline/>}
         contentChild={<Fragment>
+          <Badge key="role" color={mainColor}>{props.itemRole}</Badge>
           <CopyBadge key="creationTime" color="gray" copyContent={props.createdAt}>
             created:<Moment format="HH:mm YYYY-MM-DD">{props.createdAt}</Moment>
           </CopyBadge>
@@ -59,6 +58,9 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
           </CopyBadge>
           <CopyBadge key="systemId" color="gray" copyContent={props.itemId}>ID:{props.itemId}</CopyBadge>
           {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}
+          {props.callId && <CopyBadge key="callId" color="gray" copyContent={props.callId}>
+              Call ID: {props.callId}
+          </CopyBadge>}
         </Fragment>}
       />
       <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit/></div>

@@ -26,7 +26,7 @@ const ChatCallChain: React.FC<IChatCallChainProps> = ({chainId}) => {
     return <div>Loading...</div>;
   }
   return <ChainContextProvider value={{chainId}}>
-    <div className="bg-gray-200 p-1 mb-2 rounded shadow" id={`call-chain-${chainId}`}>
+    <div className="bg-gray-50 p-1 mb-2 rounded shadow" id={`call-chain-${chainId}`}>
       <div className="flex items-center space-x-1">
         <Badge color="purple" size="s">Call Chain: {chainData.title || "no-title"}</Badge>
         <ModPopover
@@ -45,7 +45,7 @@ const ChatCallChain: React.FC<IChatCallChainProps> = ({chainId}) => {
           <MdDeleteForever/>
         </div>
       </div>
-      <div className="border-t pt-2">
+      <div className="border-t pt-2 space-y-1.5">
         {chainData.items.map((item) =>
           <MessageItem key={item.id} itemId={item.id}/>
         )}
