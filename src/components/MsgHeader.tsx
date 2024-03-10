@@ -5,6 +5,8 @@ import {MdDeleteForever, MdInfoOutline, MdOutlineEdit} from "react-icons/md";
 import CopyBadge from "./CopyBadge";
 import {aipeReqInstance} from "../utils";
 import {ModPopover} from "./ModPopover";
+import {useDeleteChainItem} from "../hooks/useChainItemApi";
+import {useChainContext} from "../contexts/chatContexts";
 
 interface IMessageHeaderProps {
   itemId: string;
@@ -32,9 +34,12 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
   const mainColor = colorByType[props.itemType] || colorByType.default;
   const isNameVisible = (props.authorName !== undefined && props.authorName !== null && props.authorName !== "");
   const isTokenCountVisible = (props.tokenCount !== undefined && props.tokenCount !== null && props.tokenCount > 0);
+
+  const {chainId} = useChainContext();
+  const deleteItemMutation = useDeleteChainItem();
   const deleteItem = useCallback(
-    () => aipeReqInstance.delete(`items/${props.itemId}/`),
-    [props.itemId]
+    () => deleteItemMutation.mutate({itemId: props.itemId, chainId}),
+    [props.itemId, chainId, deleteItemMutation]
   )
 
   return (

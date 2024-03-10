@@ -4,6 +4,7 @@ import TableOfContents from "../components/TableOfContents";
 import UserInputBox from "../components/UserInputBox";
 import {useSelectedChatInfo} from "../hooks/chatStateHooks";
 import {useChatListQuery} from "../hooks/useChatsApi";
+import {ChatContextProvider} from "../contexts/chatContexts";
 
 
 
@@ -35,8 +36,10 @@ function MainChatPage() {
         basis-3/4 chat-content max-h-full flex-grow overflow-y-auto overflow-x-hidden
         flex flex-col flex-nowrap justify-between
       ">
-        <Chat className="max-h-fit overflow-y-scroll" chatId={selectedChatId}/>
-        <UserInputBox className="min-h-[100px] max-h-48" chatId={selectedChatId}/>
+        <ChatContextProvider value={{chatId: selectedChatId}}>
+          <Chat className="max-h-fit overflow-y-scroll" chatId={selectedChatId}/>
+          <UserInputBox className="min-h-[100px] max-h-48" chatId={selectedChatId}/>
+        </ChatContextProvider>
       </div>
     </div>
   );

@@ -3,8 +3,10 @@ import {aipeReqInstance, queryKeys} from "../utils";
 import {TChat} from "../types/dataTypes";
 import {setSpanQueryData} from "./useSpanApi";
 
-const setChatQueryData = (chat: TChat, queryClient: any) => {
-  queryClient.setQueryData(queryKeys.chat(chat.id), chat);
+const setChatQueryData = (chat: TChat, queryClient: any, selfUpdate = true) => {
+  if (selfUpdate) {
+    queryClient.setQueryData(queryKeys.chat(chat.id), chat);
+  }
   chat.spans.forEach((span: any) => setSpanQueryData(span, queryClient));
   chat.assumptions.forEach((assumption: any) =>
     queryClient.setQueryData(queryKeys.assumption(assumption.id), assumption)
@@ -19,12 +21,17 @@ const setChatQueryData = (chat: TChat, queryClient: any) => {
     queryClient.setQueryData(queryKeys.guideline(guideline.id), guideline)
   );
 }
+
 export const useChatListQuery = (queryParams = undefined) => {
   const queryClient = useQueryClient();
   return useQuery<TChat[]>({
     queryKey: queryKeys.chatList(),
-    queryFn: (): Promise<TChat[]> => aipeReqInstance.get('contexts/').then((res) => res.data),
-    onSuccess: (chats: TChat[]) => chats.forEach((chat) => setChatQueryData(chat, queryClient)),
+    queryFn: (): Promise<TChat[]> => aipeReqInstance
+      .get('contexts/')
+      .then((res) => {
+        res.data.forEach((chat) => setChatQueryData(chat, queryClient))
+        return res.data;
+      }),
     staleTime: 1000 * 60 * 10,
     ...queryParams ?? {}
   });
@@ -45,14 +52,17 @@ export const useAddNewChat = () => {
     }
   });
 }
+
 export const useChatQuery = (chatId: string, queryParams = undefined) => {
   const queryClient = useQueryClient();
   return useQuery<TChat>({
     queryKey: queryKeys.chat(chatId),
-    queryFn: () => aipeReqInstance.get(`contexts/${chatId}/`).then((res) => res.data),
+    queryFn: () => aipeReqInstance.get(`contexts/${chatId}/`).then((res) => {
+      setChatQueryData(res.data, queryClient, false);
+      return res.data;
+    }),
     enabled: !!chatId,
     staleTime: Infinity,
-    onSuccess: (chat: TChat) => setChatQueryData(chat, queryClient),
     ...queryParams ?? {}
   });
 }
