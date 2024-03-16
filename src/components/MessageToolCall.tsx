@@ -1,6 +1,7 @@
 import React from 'react';
 import {TToolMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
+import {MessageTextBody} from "./MessageTextBody";
 
 
 interface IToolMessageProps extends TToolMessage {
@@ -29,7 +30,10 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
         status={call_request.status}
         callId={call_request.call_id}
       />
-      <p>{call_request.tool_name}({call_request.tool_arguments_raw}) -&gt; {call_request.computed_result}</p>
+      <div className="flex flex-col items-start mt-1">
+        <MessageTextBody messageText={`\`\`\`${call_request.tool_name}(${call_request.tool_arguments_raw})\`\`\``}/>
+        <span>{call_request.computed_result}</span>
+      </div>
     </div>
   );
 };

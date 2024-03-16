@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import {TChatCallChain, TChatSpan} from '../types/dataTypes';
+import {TChatCallChain} from '../types/dataTypes';
 import ChatCallChain from './ChatCallChain';
 
 import {useDeleteSpan, useSpanQuery} from "../hooks/useSpanApi";

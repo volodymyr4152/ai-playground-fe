@@ -3,9 +3,9 @@ import MessageAssistant, {IAssistantMessageProps} from "./MessageAssistant";
 import ToolMessage, {IToolMessageProps} from "./MessageToolCall";
 import MessageUser, {IUserMessageProps} from "./MessageUser";
 import MessageSystem, {ISystemMessageProps} from "./MessageSystem";
-import {TChatItemMultiType} from "../types/dataTypes";
 import {ChainItemContextProvider} from "../contexts/chatContexts";
 import {useChainItemQuery} from "../hooks/useChainItemApi";
+import MessageIndication, {IIndicationMessageProps} from "./MessageIndication";
 
 interface IChatMessageProps {
   itemId: string
@@ -34,6 +34,8 @@ const MessageItem: React.FC<IChatMessageProps> = ({ itemId }) => {
     return <ChainItemContextProvider value={{itemId: itemData.id}}>
       <MessageSystem itemId={itemData.id} {...(itemData as ISystemMessageProps)} />
     </ChainItemContextProvider>
+  } else if (itemData.item_type === 'uiIndication') {
+    return <MessageIndication {...(itemData as unknown as IIndicationMessageProps)} />
   } else {
     return <div className="bg-red-400 p-2">
       <p>Message Type: {itemData.item_type}</p>

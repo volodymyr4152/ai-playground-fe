@@ -2,6 +2,7 @@ import React from 'react';
 import {TAssistantMessage, TToolCall} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 import {Badge} from "flowbite-react";
+import {MessageTextBody} from "./MessageTextBody";
 
 interface IAssistantMessageProps extends TAssistantMessage {
   itemId: string;
@@ -14,8 +15,8 @@ interface IToolCall extends Omit<TToolCall, 'id'> {
 
 
 const ToolCallBadge: React.FC<IToolCall> = (toolCall) => {
-  return <div className="flex items-center space-x-2">
-    <Badge color="warning" size="s">{toolCall.tool_name}({toolCall.tool_arguments_raw})</Badge>
+  return <div className="flex flex-col items-start space-y-1">
+    <MessageTextBody messageText={`\`${toolCall.tool_name}(${toolCall.tool_arguments_raw}\``}/>
     <Badge color="gray">{toolCall.call_id}</Badge>
   </div>
 };
@@ -33,8 +34,7 @@ const MessageAssistant: React.FC<IAssistantMessageProps> = ({ itemId, created_at
         authorName={name}
         tokenCount={token_count}
       />
-      {text_content && <p>{text_content}</p>}
-      {/*{finish_reason && <p>Finish Reason: {finish_reason}</p>}*/}
+      <MessageTextBody messageText={text_content}/>
       {tool_call_requests.map((toolCall) => {
         return <ToolCallBadge
           key={toolCall.id}

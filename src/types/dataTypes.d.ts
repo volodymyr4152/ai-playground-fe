@@ -1,6 +1,16 @@
 import {components} from "./ai-playground-types";
 
 
+export type TIndicationMessage = {
+  id: string; // something like "indication-<uuid>"
+  item_type: "uiIndication";
+  "status": "loading" | "error" | "warning" | "info" | "success";
+  created_at: string;
+  updated_at?: string;
+  item_role?: string;
+  text_content?: string;
+}
+
 export type TChat = components['schemas']['ConversationContext'];
 
 export type TAssumption = components['schemas']['ContextAssumption'];
@@ -9,9 +19,11 @@ export type TGoal = components['schemas']['ContextGoal'];
 export type TGuideline = components['schemas']['ContextGuideline'];
 
 export type TChatSpan = components['schemas']['ChatSpan'];
-export type TChatCallChain = components['schemas']['ChatCallChain'];
+export type TChatCallChain = Omit<components['schemas']['ChatCallChain'], "items"> & {
+  items: TChatItemMultiType[];
+};
 
-export type TChatItemMultiType = components['schemas']['ChatItemMultiType'];
+export type TChatItemMultiType = components['schemas']['ChatItemMultiType'] | TIndicationMessage;
 export type TItemRoleEnum = components['schemas']['ItemRoleEnum'];
 export type TMessageItemType = "assistant" | "system" | "tool" | "user";
 

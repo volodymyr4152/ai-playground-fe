@@ -1,5 +1,5 @@
 import {Button} from "flowbite-react";
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback} from "react";
 import {useSelectedChatInfo} from "../hooks/chatStateHooks";
 import {useAddNewSpan} from "../hooks/useSpanApi";
 import {useAddChainWithItem} from "../hooks/useChainsApi";

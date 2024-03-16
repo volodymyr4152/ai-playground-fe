@@ -1,6 +1,7 @@
 import React from 'react';
 import {TUserMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
+import {MessageTextBody} from "./MessageTextBody";
 
 interface IUserMessageProps extends TUserMessage {
   itemId: string;
@@ -18,7 +19,7 @@ const MessageUser: React.FC<IUserMessageProps> = (props) => {
         authorName={props.name}
         tokenCount={props.token_count}
       />
-      {props.text_content && <p>{props.text_content}</p>}
+      <MessageTextBody messageText={props.text_content} />
     </div>
   );
 };
