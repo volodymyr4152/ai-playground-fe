@@ -38,7 +38,7 @@ function MainChatPage() {
       ">
         <ChatContextProvider value={{chatId: selectedChatId}}>
           <Chat className="max-h-fit overflow-y-scroll" chatId={selectedChatId}/>
-          <UserInputBox className="min-h-[100px] max-h-48" chatId={selectedChatId}/>
+          <UserInputBox className="min-h-[175px] max-h-64" chatId={selectedChatId}/>
         </ChatContextProvider>
       </div>
     </div>
