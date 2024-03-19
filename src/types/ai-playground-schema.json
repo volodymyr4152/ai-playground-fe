@@ -361,6 +361,165 @@
                 }
             }
         },
+        "/api/aipe/chains/{chain_id}/generate/": {
+            "post": {
+                "operationId": "chains_generate_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "chains"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatItemMultiType"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/aipe/chains/{chain_id}/items/": {
+            "get": {
+                "operationId": "chains_items_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "chains"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChatItemMultiType"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "chains_items_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "chain_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "chains"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatItemMultiType"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/aipe/contexts/": {
             "get": {
                 "operationId": "contexts_list",
@@ -414,8 +573,7 @@
                                 "$ref": "#/components/schemas/ConversationContext"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -514,8 +672,7 @@
                                 "$ref": "#/components/schemas/ConversationContext"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "security": [
                     {
@@ -726,6 +883,191 @@
                             }
                         },
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/aipe/items/{item_id}/": {
+            "get": {
+                "operationId": "items_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "item_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "items"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatItemMultiType"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "items_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "item_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "items"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChatItemMultiType"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatItemMultiType"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "items_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "item_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "items"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatItemMultiType"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatItemMultiType"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedChatItemMultiType"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatItemMultiType"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "items_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "item_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "items"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
                     }
                 }
             }
@@ -1061,11 +1403,25 @@
                             "$ref": "#/components/schemas/ToolCallRequest"
                         },
                         "readOnly": true
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "text_content_template",
+                    "text_content_template_id",
                     "tool_call_requests",
                     "updated_at"
                 ]
@@ -1177,8 +1533,8 @@
                     },
                     "title": {
                         "type": "string",
-                        "readOnly": true,
-                        "nullable": true
+                        "nullable": true,
+                        "maxLength": 255
                     },
                     "replaced_by": {
                         "type": "string",
@@ -1202,7 +1558,6 @@
                     "id",
                     "replaced_by",
                     "slug",
-                    "title",
                     "updated_at"
                 ]
             },
@@ -1393,13 +1748,8 @@
                     }
                 },
                 "required": [
-                    "assumptions",
                     "created_at",
-                    "facts",
-                    "goals",
-                    "guidelines",
                     "id",
-                    "spans",
                     "updated_at"
                 ]
             },
@@ -1422,6 +1772,112 @@
                 ],
                 "type": "string",
                 "description": "* `guardrails` - Guardrails\n* `instructions` - Instructions\n* `conversation` - Conversation"
+            },
+            "MessageContentTemplate": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "template_text": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "name",
+                    "template_text",
+                    "updated_at"
+                ]
+            },
+            "PatchedAssistantMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    },
+                    "finish_reason": {
+                        "$ref": "#/components/schemas/FinishReasonEnum"
+                    },
+                    "tool_call_requests": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolCallRequest"
+                        },
+                        "readOnly": true
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            },
+            "PatchedAssistantMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedAssistantMessage"
+                    }
+                ]
             },
             "PatchedChatCallChain": {
                 "type": "object",
@@ -1457,6 +1913,31 @@
                     }
                 }
             },
+            "PatchedChatItemMultiType": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/PatchedUserMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedSystemMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedAssistantMessageTyped"
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedToolMessageTyped"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "item_type",
+                    "mapping": {
+                        "user": "#/components/schemas/PatchedUserMessageTyped",
+                        "system": "#/components/schemas/PatchedSystemMessageTyped",
+                        "assistant": "#/components/schemas/PatchedAssistantMessageTyped",
+                        "tool": "#/components/schemas/PatchedToolMessageTyped"
+                    }
+                }
+            },
             "PatchedChatSpan": {
                 "type": "object",
                 "properties": {
@@ -1481,8 +1962,8 @@
                     },
                     "title": {
                         "type": "string",
-                        "readOnly": true,
-                        "nullable": true
+                        "nullable": true,
+                        "maxLength": 255
                     },
                     "replaced_by": {
                         "type": "string",
@@ -1557,6 +2038,175 @@
                     }
                 }
             },
+            "PatchedSystemMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            },
+            "PatchedSystemMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedSystemMessage"
+                    }
+                ]
+            },
+            "PatchedToolMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "call_request": {
+                        "$ref": "#/components/schemas/ToolCallRequest"
+                    },
+                    "token_count": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "PatchedToolMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedToolMessage"
+                    }
+                ]
+            },
+            "PatchedUserMessage": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "item_role": {
+                        "$ref": "#/components/schemas/ItemRoleEnum"
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "text_content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "token_count": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            },
+            "PatchedUserMessageTyped": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "item_type": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PatchedUserMessage"
+                    }
+                ]
+            },
             "StatusEnum": {
                 "enum": [
                     "created",
@@ -1599,11 +2249,25 @@
                     },
                     "token_count": {
                         "type": "integer"
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "text_content_template",
+                    "text_content_template_id",
                     "updated_at"
                 ]
             },
@@ -1757,11 +2421,25 @@
                     "token_count": {
                         "type": "integer",
                         "readOnly": true
+                    },
+                    "text_content_template": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MessageContentTemplate"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "text_content_template_id": {
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "required": [
                     "created_at",
                     "id",
+                    "text_content_template",
+                    "text_content_template_id",
                     "token_count",
                     "updated_at"
                 ]

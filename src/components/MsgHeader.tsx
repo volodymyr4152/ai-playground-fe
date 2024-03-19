@@ -5,7 +5,8 @@ import {MdDeleteForever, MdInfoOutline, MdOutlineEdit} from "react-icons/md";
 import CopyBadge from "./CopyBadge";
 import {ModPopover} from "./ModPopover";
 import {useDeleteChainItem} from "../hooks/useChainItemApi";
-import {useChainContext} from "../contexts/chatContexts";
+import {useChainContext, useChainItemContext} from "../contexts/chatContexts";
+import {ImInsertTemplate} from "react-icons/im";
 
 interface IMessageHeaderProps {
   itemId?: string;
@@ -39,6 +40,7 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
 
   const isEditable = props.isEditable ?? true;
   const isDeletable = props.isDeletable ?? true;
+  const {templateVisible, setTemplateVisible, editMode, setEditMode} = useChainItemContext();
 
   const {chainId} = useChainContext();
   const deleteItemMutation = useDeleteChainItem();
@@ -68,7 +70,16 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
           </CopyBadge>}
         </Fragment>}
       />
-      {isEditable && <div className="hover:bg-yellow-300 p-1 rounded"><MdOutlineEdit/></div>}
+      {isEditable && <div
+        className={"hover:bg-yellow-300 p-1 rounded" + (editMode ? " bg-yellow-300" : "")}
+        onClick={() => setEditMode(!editMode)}
+      ><MdOutlineEdit/></div>
+      }
+      {isEditable && <div
+        className={"hover:bg-yellow-300 p-1 rounded" + (templateVisible ? " bg-yellow-300" : "")}
+        onClick={() => setTemplateVisible(!templateVisible)}
+      ><ImInsertTemplate /></div>
+      }
       <div className="py-3 mx-1"></div>
       {isDeletable && <div className="hover:bg-red-300 p-1 rounded" onClick={deleteItem}><MdDeleteForever/></div>}
     </div>

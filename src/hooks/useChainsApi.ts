@@ -2,8 +2,7 @@ import {TChatCallChain, TChatItemMultiType, TIndicationMessage} from "../types/d
 import {aipeReqInstance, queryKeys} from "../utils";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {setChainItemQueryData} from "./useChainItemApi";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+
 
 export const setChainQueryData = (chain: TChatCallChain, queryClient: any, selfUpdate=true) => {
   if (selfUpdate) {

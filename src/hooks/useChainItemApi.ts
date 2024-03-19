@@ -20,6 +20,21 @@ export const useChainItemQuery = (itemId: string, queryParams = undefined) => {
   });
 }
 
+export interface IUpdateChainItem {
+  itemId: string;
+  item: Partial<TChatItemMultiType>;
+}
+export const useUpdateChainItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({itemId, item}: IUpdateChainItem) => aipeReqInstance.patch(`items/${itemId}/`, item),
+    onSettled: (data, error, variables: IUpdateChainItem, context) => {
+      return queryClient.invalidateQueries({queryKey: queryKeys.chainItem(variables.itemId), exact: true});
+    }
+  });
+}
+
 
 interface IDeleteChainItem {
   chainId: string;

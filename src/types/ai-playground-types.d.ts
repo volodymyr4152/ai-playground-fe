@@ -20,6 +20,13 @@ export interface paths {
     delete: operations["chains_destroy"];
     patch: operations["chains_partial_update"];
   };
+  "/api/aipe/chains/{chain_id}/generate/": {
+    post: operations["chains_generate_create"];
+  };
+  "/api/aipe/chains/{chain_id}/items/": {
+    get: operations["chains_items_list"];
+    post: operations["chains_items_create"];
+  };
   "/api/aipe/contexts/": {
     get: operations["contexts_list"];
     post: operations["contexts_create"];
@@ -37,6 +44,12 @@ export interface paths {
   "/api/aipe/contexts/{context_id}/spans/": {
     get: operations["contexts_spans_list"];
     post: operations["contexts_spans_create"];
+  };
+  "/api/aipe/items/{item_id}/": {
+    get: operations["items_retrieve"];
+    put: operations["items_update"];
+    delete: operations["items_destroy"];
+    patch: operations["items_partial_update"];
   };
   "/api/aipe/spans/{span_id}/": {
     get: operations["spans_retrieve"];
@@ -67,6 +80,9 @@ export interface components {
       token_count?: number;
       finish_reason?: components["schemas"]["FinishReasonEnum"];
       tool_call_requests: readonly components["schemas"]["ToolCallRequest"][];
+      text_content_template: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id: string;
     };
     AssistantMessageTyped: {
       item_type: string;
@@ -92,7 +108,7 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
       slug: string;
-      title: string | null;
+      title?: string | null;
       /** Format: uuid */
       replaced_by: string | null;
       call_chains?: components["schemas"]["ChatCallChain"][];
@@ -142,11 +158,11 @@ export interface components {
     ConversationContext: {
       /** Format: uuid */
       id: string;
-      goals: components["schemas"]["ContextGoal"][];
-      guidelines: components["schemas"]["ContextGuideline"][];
-      facts: components["schemas"]["ContextFact"][];
-      assumptions: components["schemas"]["ContextAssumption"][];
-      spans: components["schemas"]["ChatSpan"][];
+      goals?: components["schemas"]["ContextGoal"][];
+      guidelines?: components["schemas"]["ContextGuideline"][];
+      facts?: components["schemas"]["ContextFact"][];
+      assumptions?: components["schemas"]["ContextAssumption"][];
+      spans?: components["schemas"]["ChatSpan"][];
       /** Format: date-time */
       created_at: string;
       /** Format: date-time */
@@ -169,6 +185,36 @@ export interface components {
      * @enum {string}
      */
     ItemRoleEnum: "guardrails" | "instructions" | "conversation";
+    MessageContentTemplate: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      template_text: string;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+    };
+    PatchedAssistantMessage: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+      finish_reason?: components["schemas"]["FinishReasonEnum"];
+      tool_call_requests?: readonly components["schemas"]["ToolCallRequest"][];
+      text_content_template?: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id?: string;
+    };
+    PatchedAssistantMessageTyped: {
+      item_type?: string;
+    } & components["schemas"]["PatchedAssistantMessage"];
     PatchedChatCallChain: {
       /** Format: uuid */
       id?: string;
@@ -181,6 +227,7 @@ export interface components {
       title?: string;
       items?: components["schemas"]["ChatItemMultiType"][];
     };
+    PatchedChatItemMultiType: components["schemas"]["PatchedUserMessageTyped"] | components["schemas"]["PatchedSystemMessageTyped"] | components["schemas"]["PatchedAssistantMessageTyped"] | components["schemas"]["PatchedToolMessageTyped"];
     PatchedChatSpan: {
       /** Format: uuid */
       id?: string;
@@ -210,6 +257,56 @@ export interface components {
       updated_at?: string;
       main_goal?: string | null;
     };
+    PatchedSystemMessage: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+      text_content_template?: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id?: string;
+    };
+    PatchedSystemMessageTyped: {
+      item_type?: string;
+    } & components["schemas"]["PatchedSystemMessage"];
+    PatchedToolMessage: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      call_request?: components["schemas"]["ToolCallRequest"];
+      token_count?: number;
+    };
+    PatchedToolMessageTyped: {
+      item_type?: string;
+    } & components["schemas"]["PatchedToolMessage"];
+    PatchedUserMessage: {
+      /** Format: uuid */
+      id?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      item_role?: components["schemas"]["ItemRoleEnum"];
+      name?: string | null;
+      text_content?: string | null;
+      token_count?: number;
+      text_content_template?: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id?: string;
+    };
+    PatchedUserMessageTyped: {
+      item_type?: string;
+    } & components["schemas"]["PatchedUserMessage"];
     /**
      * @description * `created` - Created
      * * `pending` - Pending
@@ -229,6 +326,9 @@ export interface components {
       name?: string | null;
       text_content?: string | null;
       token_count?: number;
+      text_content_template: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id: string;
     };
     SystemMessageTyped: {
       item_type: string;
@@ -271,6 +371,9 @@ export interface components {
       name?: string | null;
       text_content?: string | null;
       token_count: number;
+      text_content_template: components["schemas"]["MessageContentTemplate"];
+      /** Format: uuid */
+      text_content_template_id: string;
     };
     UserMessageTyped: {
       item_type: string;
@@ -390,6 +493,62 @@ export interface operations {
       };
     };
   };
+  chains_generate_create: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatItemMultiType"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatItemMultiType"];
+        "multipart/form-data": components["schemas"]["ChatItemMultiType"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
+        };
+      };
+    };
+  };
+  chains_items_list: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"][];
+        };
+      };
+    };
+  };
+  chains_items_create: {
+    parameters: {
+      path: {
+        chain_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatItemMultiType"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatItemMultiType"];
+        "multipart/form-data": components["schemas"]["ChatItemMultiType"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
+        };
+      };
+    };
+  };
   contexts_list: {
     responses: {
       200: {
@@ -400,7 +559,7 @@ export interface operations {
     };
   };
   contexts_create: {
-    requestBody: {
+    requestBody?: {
       content: {
         "application/json": components["schemas"]["ConversationContext"];
         "application/x-www-form-urlencoded": components["schemas"]["ConversationContext"];
@@ -437,7 +596,7 @@ export interface operations {
         context_id: string;
       };
     };
-    requestBody: {
+    requestBody?: {
       content: {
         "application/json": components["schemas"]["ConversationContext"];
         "application/x-www-form-urlencoded": components["schemas"]["ConversationContext"];
@@ -519,6 +678,75 @@ export interface operations {
       201: {
         content: {
           "application/json": components["schemas"]["ChatSpan"];
+        };
+      };
+    };
+  };
+  items_retrieve: {
+    parameters: {
+      path: {
+        item_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
+        };
+      };
+    };
+  };
+  items_update: {
+    parameters: {
+      path: {
+        item_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatItemMultiType"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatItemMultiType"];
+        "multipart/form-data": components["schemas"]["ChatItemMultiType"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
+        };
+      };
+    };
+  };
+  items_destroy: {
+    parameters: {
+      path: {
+        item_id: string;
+      };
+    };
+    responses: {
+      /** @description No response body */
+      204: {
+        content: never;
+      };
+    };
+  };
+  items_partial_update: {
+    parameters: {
+      path: {
+        item_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchedChatItemMultiType"];
+        "application/x-www-form-urlencoded": components["schemas"]["PatchedChatItemMultiType"];
+        "multipart/form-data": components["schemas"]["PatchedChatItemMultiType"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
         };
       };
     };

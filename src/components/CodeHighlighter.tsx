@@ -1,6 +1,7 @@
 import {codeToHtml} from "shiki";
 import {useEffect, useState} from "react";
 import {CodeBlockContextProvider, useCodeBlockContext} from "../contexts/blockCode";
+import {shikijsHighlighterTheme} from "../utils";
 
 interface ICodeHighlighterProps {
   children: string;
@@ -23,7 +24,7 @@ export const CodeHighlighter: React.FC<ICodeHighlighterProps> = ({ children, cla
 
   useEffect(() => {
     if (isBlock || forcedBlock) {
-      codeToHtml(children, {lang: language, theme: 'nord'}).then((html) => setHighlightedCode(html))
+      codeToHtml(children, {lang: language, theme: shikijsHighlighterTheme}).then((html) => setHighlightedCode(html))
     } else {
       setHighlightedCode(`<code data-test-id="formatted-inline-code">${children}</code>`);
     }

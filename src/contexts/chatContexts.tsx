@@ -1,4 +1,4 @@
-import {createContext, useContext} from "react";
+import {createContext, ReactNode, useContext, useMemo, useState} from "react";
 
 
 interface IChatContext {
@@ -26,8 +26,31 @@ export const useChainContext = () => useContext<IChainContext>(ChainContext);
 
 
 interface IChainItemContext {
-  itemId: string
+  itemId: string,
+  templateVisible: boolean,
+  setTemplateVisible: (newTemplateVisible: boolean) => void
+  editMode: boolean,
+  setEditMode: (newEditMode: boolean) => void
+}
+interface IChainItemContextProviderProps {
+  children: ReactNode
+  value: {
+    itemId: string
+  }
 }
 export const ChainItemContext = createContext<IChainItemContext>(undefined);
-export const ChainItemContextProvider = ChainItemContext.Provider;
+export const ChainItemContextProvider: React.FC<IChainItemContextProviderProps> = ({value, children}) => {
+  const [templateVisible, setTemplateVisible] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const computedValue = useMemo(() => ({
+    itemId: value.itemId,
+    templateVisible,
+    setTemplateVisible,
+    editMode,
+    setEditMode
+  }), [value.itemId, templateVisible, setTemplateVisible, editMode, setEditMode]);
+  return <ChainItemContext.Provider value={computedValue}>
+    {children}
+  </ChainItemContext.Provider>;
+}
 export const useChainItemContext = () => useContext<IChainItemContext>(ChainItemContext);

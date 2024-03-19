@@ -21,9 +21,11 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const templateInputRef = React.useRef<HTMLInputElement>(null);
   const roleSelectorRef = React.useRef<HTMLSelectElement>(null);
+  const authorNameRef = React.useRef<HTMLInputElement>(null);
 
+  // const defaultTemplateFunc = "({message}) => `${message}`";
   // eslint-disable-next-line no-template-curly-in-string
-  const defaultTemplateFunc = "({message}) => `${message}`";
+  const defaultTemplateFunc = "({message}) => `[Slack] VH: ${JSON.stringify(message)}`";
 
   const {selectedChatId} = useSelectedChatInfo((state) => ({selectedChatId: state.selectedChatId}));
   const {data: chatData} = useChatQuery(selectedChatId);
@@ -47,7 +49,11 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
       const messageText = templateFunc({message: inputRef.current.value.trim()});
       addChatItem.mutate({
         spanId: lastSpanId,
-        item: {item_type: roleSelectorRef.current.value, text_content: messageText}
+        item: {
+          item_type: roleSelectorRef.current.value,
+          text_content: messageText,
+          name: authorNameRef.current?.value.trim() || null
+        }
       });
     }
     inputRef.current.value = "";
@@ -90,6 +96,11 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
           <option value="assistant">Assistant</option>
           <option value="system">System</option>
         </select>
+        <input
+          type="text"
+          ref={authorNameRef}
+          className="w-48 p-1 rounded border border-gray-200"
+        />
         <input
           type="text"
           ref={templateInputRef}
