@@ -2,26 +2,26 @@ import React from 'react';
 import {TUserMessage} from "../types/dataTypes";
 import MessageHeader from "./MsgHeader";
 import {MessageTextBody} from "./MessageTextBody";
+import {GenericMessageComponent} from "./GenericMessageComponent";
 
 interface IUserMessageProps extends TUserMessage {
   itemId: string;
 }
 
 const MessageUser: React.FC<IUserMessageProps> = (props) => {
-  return (
-    <div className="bg-yellow-50 p-2 rounded shadow">
-      <MessageHeader
-        itemId={props.itemId}
-        createdAt={props.created_at}
-        updatedAt={props.updated_at}
-        itemRole={props.item_role}
-        itemType={props.item_type}
-        authorName={props.name}
-        tokenCount={props.token_count}
-      />
-      <MessageTextBody messageText={props.text_content} />
-    </div>
-  );
+  return <GenericMessageComponent
+    itemId={props.itemId}
+    created_at={props.created_at}
+    updated_at={props.updated_at}
+    item_role={props.item_role}
+    name={props.name}
+    text_content={props.text_content}
+    token_count={props.token_count}
+    item_type={props.item_type}
+    text_content_template={props.text_content_template}
+    accentColor="yellow"
+    dataId="user-message"
+  />
 };
 
 export default MessageUser;
