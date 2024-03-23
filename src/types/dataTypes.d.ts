@@ -36,3 +36,5 @@ export type TFinishReasonEnum = components['schemas']['FinishReasonEnum'];
 
 export type TToolMessage = components['schemas']['ToolMessageTyped'];
 export type TToolCall = components['schemas']['ToolCallRequest'];
+
+export type TTextTemplate = components['schemas']['MessageContentTemplate'];

@@ -1,6 +1,6 @@
 import React from 'react';
 import {TUserMessage} from "../types/dataTypes";
-import MessageHeader from "./MsgHeader";
+import MessageHeader from "./MessageHeader";
 import {MessageTextBody} from "./MessageTextBody";
 import {GenericMessageComponent} from "./GenericMessageComponent";
 

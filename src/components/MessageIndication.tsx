@@ -1,6 +1,6 @@
 import React from 'react';
 import {MessageTextBody} from "./MessageTextBody";
-import MessageHeader from "./MsgHeader";
+import MessageHeader from "./MessageHeader";
 import {ImSpinner10} from "react-icons/im";
 import {TiWarning} from "react-icons/ti";
 import {BsCheck2Circle, BsFillInfoCircleFill} from "react-icons/bs";

@@ -4,9 +4,10 @@ import {Badge} from "flowbite-react";
 import {MdDeleteForever, MdInfoOutline, MdOutlineEdit} from "react-icons/md";
 import CopyBadge from "./CopyBadge";
 import {ModPopover} from "./ModPopover";
-import {useDeleteChainItem} from "../hooks/useChainItemApi";
+import {useDeleteChainItem, useRenderChainItem} from "../hooks/useChainItemApi";
 import {useChainContext, useChainItemContext} from "../contexts/chatContexts";
 import {ImInsertTemplate} from "react-icons/im";
+import {SiRender} from "react-icons/si";
 
 interface IMessageHeaderProps {
   itemId?: string;
@@ -40,10 +41,10 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
 
   const isEditable = props.isEditable ?? true;
   const isDeletable = props.isDeletable ?? true;
-  const {templateVisible, setTemplateVisible, editMode, setEditMode} = useChainItemContext();
-
   const {chainId} = useChainContext();
+  const {templateAvailable, templateVisible, setTemplateVisible, editMode, setEditMode} = useChainItemContext();
   const deleteItemMutation = useDeleteChainItem();
+  const renderChainItemMutation = useRenderChainItem();
   const deleteItem = useCallback(
     () => deleteItemMutation.mutate({itemId: itemId, chainId}),
     [itemId, chainId, deleteItemMutation]
@@ -66,7 +67,7 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
           {itemId && <CopyBadge key="systemId" color="gray" copyContent={itemId}>ID:{itemId}</CopyBadge>}
           {isTokenCountVisible && <Badge key="tokenCount" color="gray">Token Count: {props.tokenCount}</Badge>}
           {props.callId && <CopyBadge key="callId" color="gray" copyContent={props.callId}>
-              Call ID: {props.callId}
+            Call ID: {props.callId}
           </CopyBadge>}
         </Fragment>}
       />
@@ -75,10 +76,15 @@ const MessageHeader: React.FC<IMessageHeaderProps> = (props) => {
         onClick={() => setEditMode(!editMode)}
       ><MdOutlineEdit/></div>
       }
-      {isEditable && <div
+      {isEditable && templateAvailable && <div
+        className="hover:bg-yellow-200 active:bg-yellow-400 p-1 rounded inline-block"
+        onClick={() => renderChainItemMutation.mutate({itemId})}
+      ><SiRender/></div>
+      }
+      {isEditable && templateAvailable && <div
         className={"hover:bg-yellow-300 p-1 rounded" + (templateVisible ? " bg-yellow-300" : "")}
         onClick={() => setTemplateVisible(!templateVisible)}
-      ><ImInsertTemplate /></div>
+      ><ImInsertTemplate/></div>
       }
       <div className="py-3 mx-1"></div>
       {isDeletable && <div className="hover:bg-red-300 p-1 rounded" onClick={deleteItem}><MdDeleteForever/></div>}

@@ -36,6 +36,21 @@ export const useUpdateChainItem = () => {
 }
 
 
+export interface IRenderChainItem {
+  itemId: string;
+}
+export const useRenderChainItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({itemId}: IRenderChainItem) => aipeReqInstance.post(`items/${itemId}/render_template/`),
+    onSettled: (data, error, variables: IRenderChainItem, context) => {
+      return queryClient.invalidateQueries({queryKey: queryKeys.chainItem(variables.itemId), exact: true});
+    }
+  });
+}
+
+
 interface IDeleteChainItem {
   chainId: string;
   itemId: string;

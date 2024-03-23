@@ -124,13 +124,9 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
       </div>
       <div className="flex flex-row text-gray-500 text-xs space-x-5 place-items-center">
         <p className="">
-          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
-            <BsCommand className="inline"/>
-          </span>+<span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
-            <BsShift className="inline"/>
-          </span>+<span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
-            <BsArrowReturnRight className="inline"/>
-          </span><span className="ml-1">to create new span</span>
+          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded"><BsCommand className="inline"/></span>+
+          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded">G</span>
+          <span className="ml-1">to generate new item</span>
         </p>
         <p className="">
           <span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
@@ -141,9 +137,13 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
           <span className="ml-1">to send message</span>
         </p>
         <p className="">
-          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded"><BsCommand className="inline"/></span>+
-          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded">G</span>
-          <span className="ml-1">to generate new item</span>
+          <span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
+            <BsCommand className="inline"/>
+          </span>+<span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
+            <BsShift className="inline"/>
+          </span>+<span className="mx-1 p-1 pt-0 border border-gray-400 rounded">
+            <BsArrowReturnRight className="inline"/>
+          </span><span className="ml-1">to create new span</span>
         </p>
       </div>
     </div>

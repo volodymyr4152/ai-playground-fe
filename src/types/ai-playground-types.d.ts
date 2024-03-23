@@ -51,6 +51,9 @@ export interface paths {
     delete: operations["items_destroy"];
     patch: operations["items_partial_update"];
   };
+  "/api/aipe/items/{item_id}/render_template": {
+    post: operations["items_render_template_create"];
+  };
   "/api/aipe/spans/{span_id}/": {
     get: operations["spans_retrieve"];
     put: operations["spans_update"];
@@ -60,6 +63,16 @@ export interface paths {
   "/api/aipe/spans/{span_id}/chains/": {
     get: operations["spans_chains_list"];
     post: operations["spans_chains_create"];
+  };
+  "/api/aipe/templates/": {
+    get: operations["templates_list"];
+    post: operations["templates_create"];
+  };
+  "/api/aipe/templates/{template_id}/": {
+    get: operations["templates_retrieve"];
+    put: operations["templates_update"];
+    delete: operations["templates_destroy"];
+    patch: operations["templates_partial_update"];
   };
 }
 
@@ -256,6 +269,16 @@ export interface components {
       /** Format: date-time */
       updated_at?: string;
       main_goal?: string | null;
+    };
+    PatchedMessageContentTemplate: {
+      /** Format: uuid */
+      id?: string;
+      name?: string;
+      template_text?: string;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
     };
     PatchedSystemMessage: {
       /** Format: uuid */
@@ -751,6 +774,27 @@ export interface operations {
       };
     };
   };
+  items_render_template_create: {
+    parameters: {
+      path: {
+        item_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["ChatItemMultiType"];
+        "application/x-www-form-urlencoded": components["schemas"]["ChatItemMultiType"];
+        "multipart/form-data": components["schemas"]["ChatItemMultiType"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ChatItemMultiType"];
+        };
+      };
+    };
+  };
   spans_retrieve: {
     parameters: {
       path: {
@@ -851,6 +895,100 @@ export interface operations {
       201: {
         content: {
           "application/json": components["schemas"]["ChatCallChain"];
+        };
+      };
+    };
+  };
+  templates_list: {
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MessageContentTemplate"][];
+        };
+      };
+    };
+  };
+  templates_create: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MessageContentTemplate"];
+        "application/x-www-form-urlencoded": components["schemas"]["MessageContentTemplate"];
+        "multipart/form-data": components["schemas"]["MessageContentTemplate"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["MessageContentTemplate"];
+        };
+      };
+    };
+  };
+  templates_retrieve: {
+    parameters: {
+      path: {
+        template_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MessageContentTemplate"];
+        };
+      };
+    };
+  };
+  templates_update: {
+    parameters: {
+      path: {
+        template_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["MessageContentTemplate"];
+        "application/x-www-form-urlencoded": components["schemas"]["MessageContentTemplate"];
+        "multipart/form-data": components["schemas"]["MessageContentTemplate"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MessageContentTemplate"];
+        };
+      };
+    };
+  };
+  templates_destroy: {
+    parameters: {
+      path: {
+        template_id: string;
+      };
+    };
+    responses: {
+      /** @description No response body */
+      204: {
+        content: never;
+      };
+    };
+  };
+  templates_partial_update: {
+    parameters: {
+      path: {
+        template_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchedMessageContentTemplate"];
+        "application/x-www-form-urlencoded": components["schemas"]["PatchedMessageContentTemplate"];
+        "multipart/form-data": components["schemas"]["PatchedMessageContentTemplate"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["MessageContentTemplate"];
         };
       };
     };

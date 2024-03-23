@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {TSystemMessage} from "../types/dataTypes";
-import MessageHeader from "./MsgHeader";
+import MessageHeader from "./MessageHeader";
 import {MessageTextBody} from "./MessageTextBody";
 import {useChainItemContext} from "../contexts/chatContexts";
 import {useUpdateChainItem} from "../hooks/useChainItemApi";

@@ -1,6 +1,6 @@
 import React from 'react';
 import {TAssistantMessage, TToolCall} from "../types/dataTypes";
-import MessageHeader from "./MsgHeader";
+import MessageHeader from "./MessageHeader";
 import {Badge} from "flowbite-react";
 import {MessageTextBody} from "./MessageTextBody";
 import {GenericMessageComponent} from "./GenericMessageComponent";
@@ -25,7 +25,7 @@ const ToolCallBadge: React.FC<IToolCall> = (toolCall) => {
 
 const MessageAssistant: React.FC<IAssistantMessageProps> = ({
   itemId, created_at, updated_at, item_role, name, text_content, token_count, finish_reason, item_type,
-  tool_call_requests
+  tool_call_requests, text_content_template
 }) => {
   return <GenericMessageComponent
     itemId={itemId}
@@ -38,7 +38,7 @@ const MessageAssistant: React.FC<IAssistantMessageProps> = ({
     item_type={item_type}
     accentColor="blue"
     dataId="assistant-message"
-    text_content_template={{template_text: 'template text'}}
+    text_content_template={text_content_template}
   >
     {tool_call_requests.map((toolCall) => {
       return <ToolCallBadge

@@ -25,6 +25,8 @@ export const queryKeys = {
   assumption: (assumptionId: string) => [baseQueryPrefixes.assumption, 'assumption', assumptionId],
   goal: (goalId: string) => [baseQueryPrefixes.goal, 'goal', goalId],
   guideline: (guidelineId: string) => [baseQueryPrefixes.guideline, 'guideline', guidelineId],
+
+  textTemplate: (templateId: string) => ['textTemplate', templateId],
 }
 
 // export const mutationKeys = {

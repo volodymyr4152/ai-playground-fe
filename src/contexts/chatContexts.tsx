@@ -27,6 +27,7 @@ export const useChainContext = () => useContext<IChainContext>(ChainContext);
 
 interface IChainItemContext {
   itemId: string,
+  templateAvailable: boolean,
   templateVisible: boolean,
   setTemplateVisible: (newTemplateVisible: boolean) => void
   editMode: boolean,
@@ -36,14 +37,26 @@ interface IChainItemContextProviderProps {
   children: ReactNode
   value: {
     itemId: string
+    templateAvailable: boolean
   }
 }
-export const ChainItemContext = createContext<IChainItemContext>(undefined);
+
+
+const nothing = () => {};
+export const ChainItemContext = createContext<IChainItemContext>({
+  itemId: "",
+  templateAvailable: false,
+  templateVisible: false,
+  setTemplateVisible: nothing,
+  editMode: false,
+  setEditMode: nothing
+});
 export const ChainItemContextProvider: React.FC<IChainItemContextProviderProps> = ({value, children}) => {
   const [templateVisible, setTemplateVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const computedValue = useMemo(() => ({
     itemId: value.itemId,
+    templateAvailable: value.templateAvailable,
     templateVisible,
     setTemplateVisible,
     editMode,

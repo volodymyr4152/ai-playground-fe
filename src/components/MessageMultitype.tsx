@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import MessageAssistant, {IAssistantMessageProps} from "./MessageAssistant";
 import ToolMessage, {IToolMessageProps} from "./MessageToolCall";
 import MessageUser, {IUserMessageProps} from "./MessageUser";
@@ -13,25 +13,27 @@ interface IChatMessageProps {
 
 const MessageItem: React.FC<IChatMessageProps> = ({ itemId }) => {
   const {data: itemData} = useChainItemQuery(itemId);
-
+  // @ts-ignore
+  const templateAvailable = !!itemData?.text_content_template;
+  const contextProps = useMemo(() => ({itemId, templateAvailable}), [itemId, templateAvailable]);
   if (!itemData) {
     return <div>Loading...</div>;
   }
 
   if (itemData.item_type === 'assistant') {
-    return <ChainItemContextProvider value={{itemId: itemData.id}}>
+    return <ChainItemContextProvider value={contextProps}>
       <MessageAssistant itemId={itemData.id} {...(itemData as IAssistantMessageProps)} />
     </ChainItemContextProvider>
   } else if (itemData.item_type === 'tool') {
-    return <ChainItemContextProvider value={{itemId: itemData.id}}>
+    return <ChainItemContextProvider value={contextProps}>
       <ToolMessage itemId={itemData.id} {...(itemData as IToolMessageProps)} />
     </ChainItemContextProvider>
   } else if (itemData.item_type === 'user') {
-    return <ChainItemContextProvider value={{itemId: itemData.id}}>
+    return <ChainItemContextProvider value={contextProps}>
       <MessageUser itemId={itemData.id} {...(itemData as IUserMessageProps)} />
     </ChainItemContextProvider>
   } else if (itemData.item_type === 'system') {
-    return <ChainItemContextProvider value={{itemId: itemData.id}}>
+    return <ChainItemContextProvider value={contextProps}>
       <MessageSystem itemId={itemData.id} {...(itemData as ISystemMessageProps)} />
     </ChainItemContextProvider>
   } else if (itemData.item_type === 'uiIndication') {
