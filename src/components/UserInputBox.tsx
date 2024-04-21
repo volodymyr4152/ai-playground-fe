@@ -99,6 +99,7 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
         <input
           type="text"
           ref={authorNameRef}
+          placeholder="Author Name"
           className="w-48 p-1 rounded border border-gray-200"
         />
         <input

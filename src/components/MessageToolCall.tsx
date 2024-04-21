@@ -36,7 +36,10 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
           messageText={`\`\`\`${call_request.tool_name}(${call_request.tool_arguments_raw})\`\`\``}
           isEditable={false}
         />
-        <span>{call_request.computed_result}</span>
+        <MessageTextBody
+          messageText={`\`\`\`${call_request.computed_result}\`\`\``}
+          isEditable={false}
+        />
       </div>
     </div>
   );

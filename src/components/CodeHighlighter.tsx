@@ -20,7 +20,11 @@ export const CodeBlock: React.FC<{children: string, className?: string}> = ({chi
 export const CodeHighlighter: React.FC<ICodeHighlighterProps> = ({ children, className, forcedLanguage, forcedBlock}) => {
   const [highlightedCode, setHighlightedCode] = useState('');
   const isBlock = useCodeBlockContext();
-  const language = forcedLanguage || className?.toLowerCase().replace('lang-', '') || '';
+  let language = forcedLanguage || className?.toLowerCase().replace('lang-', '') || '';
+  if (!['js', 'javascript', 'python', 'md', 'markdown'].includes(language)) {
+    console.error(`Invalid language: ${language}`);
+    language = 'plaintext';
+  }
 
   useEffect(() => {
     if (isBlock || forcedBlock) {
