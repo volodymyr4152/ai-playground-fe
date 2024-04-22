@@ -1,6 +1,6 @@
 import {Button} from "flowbite-react";
 import React, {useCallback} from "react";
-import {useSelectedChatInfo} from "../hooks/chatStateHooks";
+import {useSelectedChatInfo, useUserInputState} from "../hooks/chatStateHooks";
 import {useAddNewSpan, useSpanQuery} from "../hooks/useSpanApi";
 import {useAddChainWithItem, useGenerateToChain} from "../hooks/useChainsApi";
 import {useChatQuery} from "../hooks/useChatsApi";
@@ -19,9 +19,16 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
   const newSpanBtnTxt = props.newSpanButtonText ?? "New Span";
 
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
-  const templateInputRef = React.useRef<HTMLInputElement>(null);
-  const roleSelectorRef = React.useRef<HTMLSelectElement>(null);
-  const authorNameRef = React.useRef<HTMLInputElement>(null);
+  const {
+    selectedRole,
+    setSelectedRole,
+    currentContent,
+    setCurrentContent,
+    userName,
+    setUserName,
+    formattingCode,
+    setFormattingCode,
+  } = useUserInputState();
 
   // const defaultTemplateFunc = "({message}) => `${message}`";
   // eslint-disable-next-line no-template-curly-in-string
@@ -42,34 +49,34 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
   }, [generateToChainMutation, lastChainId]);
 
   const handleSubmit = useCallback(() => {
-    if (inputRef.current) {
-      const templateFuncStr = templateInputRef.current?.value.trim() || defaultTemplateFunc;
+    if (currentContent.trim()) {
+      const templateFuncStr = formattingCode.trim() || defaultTemplateFunc;
       // eslint-disable-next-line no-eval
       const templateFunc = eval(templateFuncStr);
-      const messageText = templateFunc({message: inputRef.current.value.trim()});
+      const messageText = templateFunc({message: currentContent.trim()});
       addChatItem.mutate({
         spanId: lastSpanId,
         item: {
-          item_type: roleSelectorRef.current.value,
+          item_type: selectedRole,
           text_content: messageText,
-          name: authorNameRef.current?.value.trim() || null
+          name: userName.trim() || null
         }
       });
     }
-    inputRef.current.value = "";
+    setCurrentContent("");
     inputRef.current.focus();
-  }, [lastSpanId, addChatItem]);
+  }, [currentContent, setCurrentContent, formattingCode, addChatItem, lastSpanId, selectedRole, userName]);
 
   const handleNewSpan = useCallback(() => {
-    if (inputRef.current) {
+    if (currentContent.trim()) {
       addNewSpan.mutate({
         chatId: selectedChatId,
-        spanInfo: {title: inputRef.current.value.trim()}
+        spanInfo: {title: currentContent.trim()}
       });
     }
-    inputRef.current.value = "";
+    setCurrentContent("");
     inputRef.current.focus();
-  }, [selectedChatId, addNewSpan]);
+  }, [currentContent, setCurrentContent, addNewSpan, selectedChatId]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.metaKey && e.shiftKey) {
@@ -89,8 +96,8 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
           name="roleSelector"
           id="roleSelector"
           className="p-1 rounded border border-gray-200"
-          ref={roleSelectorRef}
-          defaultValue="user"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value)}
         >
           <option value="user">User</option>
           <option value="assistant">Assistant</option>
@@ -98,15 +105,16 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
         </select>
         <input
           type="text"
-          ref={authorNameRef}
           placeholder="Author Name"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
           className="w-48 p-1 rounded border border-gray-200"
         />
         <input
           type="text"
-          ref={templateInputRef}
           placeholder={defaultTemplateFunc}
-          defaultValue={defaultTemplateFunc}
+          value={formattingCode}
+          onChange={(e) => setFormattingCode(e.target.value)}
           className="w-full p-1 rounded border border-gray-200"
         />
       </div>
@@ -117,6 +125,8 @@ const UserInputBox: React.FC<IUserInputBoxProps> = (props) => {
           ref={inputRef}
           rows={3}
           onKeyDown={handleKeyDown}
+          onChange={(e) => setCurrentContent(e.target.value)}
+          value={currentContent}
         />
         <div className="flex space-y-1 flex-col items-stretch h-full">
           <Button gradientDuoTone="purpleToBlue" pill onClick={handleSubmit}>{submitBtnTxt}</Button>

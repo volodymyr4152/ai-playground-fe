@@ -18,6 +18,9 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
   token_count,
   item_type
 }) => {
+  let renderText = call_request.computed_result;
+  const codeTags = (renderText) ? (renderText.match(/```/g) || []).length : 0;
+  renderText = codeTags > 0 ? renderText : "```" + renderText + "```";
   return (
     <div className="bg-green-50 p-2 rounded shadow">
       <MessageHeader
@@ -37,7 +40,7 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
           isEditable={false}
         />
         <MessageTextBody
-          messageText={`\`\`\`${call_request.computed_result}\`\`\``}
+          messageText={renderText}
           isEditable={false}
         />
       </div>

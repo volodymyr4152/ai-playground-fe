@@ -1072,7 +1072,7 @@
                 }
             }
         },
-        "/api/aipe/items/{item_id}/render_template": {
+        "/api/aipe/items/{item_id}/render_template/": {
             "post": {
                 "operationId": "items_render_template_create",
                 "parameters": [
@@ -1745,7 +1745,6 @@
                     "created_at",
                     "id",
                     "text_content_template",
-                    "text_content_template_id",
                     "tool_call_requests",
                     "updated_at"
                 ]
@@ -1885,7 +1884,7 @@
                     "updated_at"
                 ]
             },
-            "ContextAssumption": {
+            "ContextMemoItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1893,12 +1892,16 @@
                         "format": "uuid",
                         "readOnly": true
                     },
-                    "index": {
-                        "type": "integer"
-                    },
-                    "assumption": {
+                    "short_id": {
                         "type": "string",
-                        "maxLength": 255
+                        "maxLength": 50
+                    },
+                    "segment": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "content": {
+                        "type": "string"
                     },
                     "created_at": {
                         "type": "string",
@@ -1912,108 +1915,10 @@
                     }
                 },
                 "required": [
-                    "assumption",
+                    "content",
                     "created_at",
                     "id",
-                    "updated_at"
-                ]
-            },
-            "ContextFact": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "readOnly": true
-                    },
-                    "index": {
-                        "type": "integer"
-                    },
-                    "fact": {
-                        "type": "string",
-                        "maxLength": 255
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "created_at",
-                    "fact",
-                    "id",
-                    "updated_at"
-                ]
-            },
-            "ContextGoal": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "readOnly": true
-                    },
-                    "index": {
-                        "type": "integer"
-                    },
-                    "goal": {
-                        "type": "string",
-                        "maxLength": 255
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "created_at",
-                    "goal",
-                    "id",
-                    "updated_at"
-                ]
-            },
-            "ContextGuideline": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "readOnly": true
-                    },
-                    "index": {
-                        "type": "integer"
-                    },
-                    "guideline": {
-                        "type": "string",
-                        "maxLength": 255
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": true
-                    }
-                },
-                "required": [
-                    "created_at",
-                    "guideline",
-                    "id",
+                    "segment",
                     "updated_at"
                 ]
             },
@@ -2025,28 +1930,10 @@
                         "format": "uuid",
                         "readOnly": true
                     },
-                    "goals": {
+                    "memo_items": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ContextGoal"
-                        }
-                    },
-                    "guidelines": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextGuideline"
-                        }
-                    },
-                    "facts": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextFact"
-                        }
-                    },
-                    "assumptions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextAssumption"
+                            "$ref": "#/components/schemas/ContextMemoItem"
                         }
                     },
                     "spans": {
@@ -2064,6 +1951,11 @@
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
                     },
                     "main_goal": {
                         "type": "string",
@@ -2315,28 +2207,10 @@
                         "format": "uuid",
                         "readOnly": true
                     },
-                    "goals": {
+                    "memo_items": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ContextGoal"
-                        }
-                    },
-                    "guidelines": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextGuideline"
-                        }
-                    },
-                    "facts": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextFact"
-                        }
-                    },
-                    "assumptions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ContextAssumption"
+                            "$ref": "#/components/schemas/ContextMemoItem"
                         }
                     },
                     "spans": {
@@ -2354,6 +2228,11 @@
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true,
+                        "maxLength": 255
                     },
                     "main_goal": {
                         "type": "string",
@@ -2618,7 +2497,6 @@
                     "created_at",
                     "id",
                     "text_content_template",
-                    "text_content_template_id",
                     "updated_at"
                 ]
             },
@@ -2790,7 +2668,6 @@
                     "created_at",
                     "id",
                     "text_content_template",
-                    "text_content_template_id",
                     "token_count",
                     "updated_at"
                 ]

@@ -51,7 +51,7 @@ export interface paths {
     delete: operations["items_destroy"];
     patch: operations["items_partial_update"];
   };
-  "/api/aipe/items/{item_id}/render_template": {
+  "/api/aipe/items/{item_id}/render_template/": {
     post: operations["items_render_template_create"];
   };
   "/api/aipe/spans/{span_id}/": {
@@ -95,7 +95,7 @@ export interface components {
       tool_call_requests: readonly components["schemas"]["ToolCallRequest"][];
       text_content_template: components["schemas"]["MessageContentTemplate"];
       /** Format: uuid */
-      text_content_template_id: string;
+      text_content_template_id?: string;
     };
     AssistantMessageTyped: {
       item_type: string;
@@ -128,41 +128,12 @@ export interface components {
       /** Format: uuid */
       context?: string;
     };
-    ContextAssumption: {
+    ContextMemoItem: {
       /** Format: uuid */
       id: string;
-      index?: number;
-      assumption: string;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at: string;
-    };
-    ContextFact: {
-      /** Format: uuid */
-      id: string;
-      index?: number;
-      fact: string;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at: string;
-    };
-    ContextGoal: {
-      /** Format: uuid */
-      id: string;
-      index?: number;
-      goal: string;
-      /** Format: date-time */
-      created_at: string;
-      /** Format: date-time */
-      updated_at: string;
-    };
-    ContextGuideline: {
-      /** Format: uuid */
-      id: string;
-      index?: number;
-      guideline: string;
+      short_id?: string;
+      segment: string;
+      content: string;
       /** Format: date-time */
       created_at: string;
       /** Format: date-time */
@@ -171,15 +142,13 @@ export interface components {
     ConversationContext: {
       /** Format: uuid */
       id: string;
-      goals?: components["schemas"]["ContextGoal"][];
-      guidelines?: components["schemas"]["ContextGuideline"][];
-      facts?: components["schemas"]["ContextFact"][];
-      assumptions?: components["schemas"]["ContextAssumption"][];
+      memo_items?: components["schemas"]["ContextMemoItem"][];
       spans?: components["schemas"]["ChatSpan"][];
       /** Format: date-time */
       created_at: string;
       /** Format: date-time */
       updated_at: string;
+      title?: string | null;
       main_goal?: string | null;
     };
     /**
@@ -259,15 +228,13 @@ export interface components {
     PatchedConversationContext: {
       /** Format: uuid */
       id?: string;
-      goals?: components["schemas"]["ContextGoal"][];
-      guidelines?: components["schemas"]["ContextGuideline"][];
-      facts?: components["schemas"]["ContextFact"][];
-      assumptions?: components["schemas"]["ContextAssumption"][];
+      memo_items?: components["schemas"]["ContextMemoItem"][];
       spans?: components["schemas"]["ChatSpan"][];
       /** Format: date-time */
       created_at?: string;
       /** Format: date-time */
       updated_at?: string;
+      title?: string | null;
       main_goal?: string | null;
     };
     PatchedMessageContentTemplate: {
@@ -351,7 +318,7 @@ export interface components {
       token_count?: number;
       text_content_template: components["schemas"]["MessageContentTemplate"];
       /** Format: uuid */
-      text_content_template_id: string;
+      text_content_template_id?: string;
     };
     SystemMessageTyped: {
       item_type: string;
@@ -396,7 +363,7 @@ export interface components {
       token_count: number;
       text_content_template: components["schemas"]["MessageContentTemplate"];
       /** Format: uuid */
-      text_content_template_id: string;
+      text_content_template_id?: string;
     };
     UserMessageTyped: {
       item_type: string;

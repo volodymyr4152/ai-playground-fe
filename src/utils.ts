@@ -9,10 +9,7 @@ export const baseQueryPrefixes = {
   span: 'span',
   chain: 'chain',
   chainItem: 'chainItem',
-  fact: 'fact',
-  assumption: 'assumption',
-  goal: 'goal',
-  guideline: 'guideline',
+  memoItem: 'memoItem',
 };
 export const queryKeys = {
   chatList: () => [baseQueryPrefixes.chat, 'list'],
@@ -20,12 +17,7 @@ export const queryKeys = {
   span: (spanId: string) => [baseQueryPrefixes.span,  spanId],
   chain: (chainId: string) => [baseQueryPrefixes.chain, chainId],
   chainItem: (itemId: string) => [baseQueryPrefixes.chainItem, itemId],
-
-  fact: (factId: string) => [baseQueryPrefixes.fact, 'fact', factId],
-  assumption: (assumptionId: string) => [baseQueryPrefixes.assumption, 'assumption', assumptionId],
-  goal: (goalId: string) => [baseQueryPrefixes.goal, 'goal', goalId],
-  guideline: (guidelineId: string) => [baseQueryPrefixes.guideline, 'guideline', guidelineId],
-
+  memoItems: (memoItemId: string) => [baseQueryPrefixes.memoItem, memoItemId],
   textTemplate: (templateId: string) => ['textTemplate', templateId],
 }
 

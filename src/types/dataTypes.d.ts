@@ -13,10 +13,7 @@ export type TIndicationMessage = {
 
 export type TChat = components['schemas']['ConversationContext'];
 
-export type TAssumption = components['schemas']['ContextAssumption'];
-export type TFact = components['schemas']['ContextFact'];
-export type TGoal = components['schemas']['ContextGoal'];
-export type TGuideline = components['schemas']['ContextGuideline'];
+export type TMemoItem = components['schemas']['ContextMemoItem'];
 
 export type TChatSpan = components['schemas']['ChatSpan'];
 export type TChatCallChain = Omit<components['schemas']['ChatCallChain'], "items"> & {

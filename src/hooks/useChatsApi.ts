@@ -8,17 +8,8 @@ const setChatQueryData = (chat: TChat, queryClient: any, selfUpdate = true) => {
     queryClient.setQueryData(queryKeys.chat(chat.id), chat);
   }
   chat.spans.forEach((span: any) => setSpanQueryData(span, queryClient));
-  chat.assumptions.forEach((assumption: any) =>
-    queryClient.setQueryData(queryKeys.assumption(assumption.id), assumption)
-  );
-  chat.facts.forEach((fact: any) =>
-    queryClient.setQueryData(queryKeys.fact(fact.id), fact)
-  );
-  chat.goals.forEach((goal: any) =>
-    queryClient.setQueryData(queryKeys.goal(goal.id), goal)
-  );
-  chat.guidelines.forEach((guideline: any) =>
-    queryClient.setQueryData(queryKeys.guideline(guideline.id), guideline)
+  chat.memo_items.forEach((memoItem: any) =>
+    queryClient.setQueryData(queryKeys.memoItems(memoItem.id), memoItem)
   );
 }
 

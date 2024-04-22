@@ -23,7 +23,7 @@ export const CodeHighlighter: React.FC<ICodeHighlighterProps> = ({ children, cla
   let language = forcedLanguage || className?.toLowerCase().replace('lang-', '') || '';
   if (!['js', 'javascript', 'python', 'md', 'markdown'].includes(language)) {
     console.error(`Invalid language: ${language}`);
-    language = 'plaintext';
+    language = '';
   }
 
   useEffect(() => {
