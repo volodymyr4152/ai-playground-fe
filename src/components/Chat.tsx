@@ -3,6 +3,7 @@ import { TChatSpan, TMemoItem } from '../types/dataTypes';
 import ChatSpan from "./ChatSpan";
 import {useChatQuery} from "../hooks/useChatsApi";
 import {ChatContextProvider} from "../contexts/chatContexts";
+import MemoItem from "./MemoItem";
 
 interface IChatProps {
   chatId: string
@@ -24,7 +25,8 @@ const Chat: React.FC<IChatProps> = ({chatId, className}) => {
       <ul className="list-disc ml-6">
         {chatData.memo_items.map((memoItem: TMemoItem, index: number) => (
           <li key={memoItem.segment + memoItem.short_id}>
-            <code>{memoItem.segment}-{memoItem.short_id}</code>: {memoItem.content}</li>
+            <MemoItem content={memoItem.content} shortId={memoItem.short_id} segment={memoItem.segment}/>
+          </li>
         ))}
       </ul>
     </div>
