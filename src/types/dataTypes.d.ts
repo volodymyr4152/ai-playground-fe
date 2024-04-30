@@ -14,6 +14,7 @@ export type TIndicationMessage = {
 export type TChat = components['schemas']['ConversationContext'];
 
 export type TMemoItem = components['schemas']['ContextMemoItem'];
+export type TChatVariable = components['schemas']['ContextVariable'];
 
 export type TChatSpan = components['schemas']['ChatSpan'];
 export type TChatCallChain = Omit<components['schemas']['ChatCallChain'], "items"> & {

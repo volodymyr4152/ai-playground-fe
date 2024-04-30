@@ -887,6 +887,107 @@
                 }
             }
         },
+        "/api/aipe/contexts/{context_id}/variables/": {
+            "get": {
+                "operationId": "contexts_variables_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "context_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "contexts"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ContextVariable"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "contexts_variables_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "context_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "contexts"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContextVariable"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/aipe/items/{item_id}/": {
             "get": {
                 "operationId": "items_retrieve",
@@ -1681,6 +1782,192 @@
                     }
                 }
             }
+        },
+        "/api/aipe/variables/{variable_id}/": {
+            "get": {
+                "operationId": "variables_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "variable_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "variables"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContextVariable"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "variables_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "variable_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "variables"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContextVariable"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContextVariable"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "variables_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "variable_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "variables"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContextVariable"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContextVariable"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContextVariable"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ContextVariable"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "variables_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "variable_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "variables"
+                ],
+                "security": [
+                    {
+                        "cookieAuth": []
+                    },
+                    {
+                        "basicAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1873,7 +2160,8 @@
                     },
                     "context": {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "writeOnly": true
                     }
                 },
                 "required": [
@@ -1922,6 +2210,43 @@
                     "updated_at"
                 ]
             },
+            "ContextVariable": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "value": {},
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "context": {
+                        "type": "string",
+                        "format": "uuid",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "name",
+                    "updated_at",
+                    "value"
+                ]
+            },
             "ConversationContext": {
                 "type": "object",
                 "properties": {
@@ -1934,6 +2259,12 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ContextMemoItem"
+                        }
+                    },
+                    "variables": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContextVariable"
                         }
                     },
                     "spans": {
@@ -2195,7 +2526,38 @@
                     },
                     "context": {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "writeOnly": true
+                    }
+                }
+            },
+            "PatchedContextVariable": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "value": {},
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "context": {
+                        "type": "string",
+                        "format": "uuid",
+                        "writeOnly": true
                     }
                 }
             },
@@ -2211,6 +2573,12 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ContextMemoItem"
+                        }
+                    },
+                    "variables": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContextVariable"
                         }
                     },
                     "spans": {

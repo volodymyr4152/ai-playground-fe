@@ -10,6 +10,7 @@ export const baseQueryPrefixes = {
   chain: 'chain',
   chainItem: 'chainItem',
   memoItem: 'memoItem',
+  variable: 'variable',
 };
 export const queryKeys = {
   chatList: () => [baseQueryPrefixes.chat, 'list'],
@@ -19,27 +20,5 @@ export const queryKeys = {
   chainItem: (itemId: string) => [baseQueryPrefixes.chainItem, itemId],
   memoItems: (memoItemId: string) => [baseQueryPrefixes.memoItem, memoItemId],
   textTemplate: (templateId: string) => ['textTemplate', templateId],
+  variable: (varId: string) => [baseQueryPrefixes.variable, varId],
 }
-
-// export const mutationKeys = {
-//   chat: {
-//     add: () => [...queryKeys.chatList(), 'add'],
-//     update: (chatId: string) => [...queryKeys.chat(chatId), 'update'],
-//     delete: (chatId: string) => [...queryKeys.chat(chatId), 'delete'],
-//   },
-//   span: {
-//     add: (chatId: string) => [...queryKeys.chat(chatId), 'add', 'span'],
-//     update: (spanId: string) => [...queryKeys.span(spanId), 'update'],
-//     delete: (spanId: string) => [...queryKeys.span(spanId), 'delete'],
-//   },
-//   chain: {
-//     add: (spanId: string) => [...queryKeys.span(spanId), 'add', 'chain'],
-//     update: (chainId: string) => [...queryKeys.chain(chainId), 'update'],
-//     delete: (chainId: string) => [...queryKeys.chain(chainId), 'delete'],
-//   },
-//   chainItem: {
-//     add: (chainId: string) => [...queryKeys.chain(chainId), 'add', 'chainItem'],
-//     update: (itemId: string) => [...queryKeys.chainItem(itemId), 'update'],
-//     delete: (itemId: string) => [...queryKeys.chainItem(itemId), 'delete'],
-//   },
-// }

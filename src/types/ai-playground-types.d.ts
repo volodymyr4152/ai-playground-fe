@@ -45,6 +45,10 @@ export interface paths {
     get: operations["contexts_spans_list"];
     post: operations["contexts_spans_create"];
   };
+  "/api/aipe/contexts/{context_id}/variables/": {
+    get: operations["contexts_variables_list"];
+    post: operations["contexts_variables_create"];
+  };
   "/api/aipe/items/{item_id}/": {
     get: operations["items_retrieve"];
     put: operations["items_update"];
@@ -73,6 +77,12 @@ export interface paths {
     put: operations["templates_update"];
     delete: operations["templates_destroy"];
     patch: operations["templates_partial_update"];
+  };
+  "/api/aipe/variables/{variable_id}/": {
+    get: operations["variables_retrieve"];
+    put: operations["variables_update"];
+    delete: operations["variables_destroy"];
+    patch: operations["variables_partial_update"];
   };
 }
 
@@ -139,10 +149,23 @@ export interface components {
       /** Format: date-time */
       updated_at: string;
     };
+    ContextVariable: {
+      /** Format: uuid */
+      id: string;
+      name: string;
+      value: unknown;
+      /** Format: date-time */
+      created_at: string;
+      /** Format: date-time */
+      updated_at: string;
+      /** Format: uuid */
+      context?: string;
+    };
     ConversationContext: {
       /** Format: uuid */
       id: string;
       memo_items?: components["schemas"]["ContextMemoItem"][];
+      variables?: components["schemas"]["ContextVariable"][];
       spans?: components["schemas"]["ChatSpan"][];
       /** Format: date-time */
       created_at: string;
@@ -225,10 +248,23 @@ export interface components {
       /** Format: uuid */
       context?: string;
     };
+    PatchedContextVariable: {
+      /** Format: uuid */
+      id?: string;
+      name?: string;
+      value?: unknown;
+      /** Format: date-time */
+      created_at?: string;
+      /** Format: date-time */
+      updated_at?: string;
+      /** Format: uuid */
+      context?: string;
+    };
     PatchedConversationContext: {
       /** Format: uuid */
       id?: string;
       memo_items?: components["schemas"]["ContextMemoItem"][];
+      variables?: components["schemas"]["ContextVariable"][];
       spans?: components["schemas"]["ChatSpan"][];
       /** Format: date-time */
       created_at?: string;
@@ -672,6 +708,41 @@ export interface operations {
       };
     };
   };
+  contexts_variables_list: {
+    parameters: {
+      path: {
+        context_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ContextVariable"][];
+        };
+      };
+    };
+  };
+  contexts_variables_create: {
+    parameters: {
+      path: {
+        context_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ContextVariable"];
+        "application/x-www-form-urlencoded": components["schemas"]["ContextVariable"];
+        "multipart/form-data": components["schemas"]["ContextVariable"];
+      };
+    };
+    responses: {
+      201: {
+        content: {
+          "application/json": components["schemas"]["ContextVariable"];
+        };
+      };
+    };
+  };
   items_retrieve: {
     parameters: {
       path: {
@@ -956,6 +1027,75 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["MessageContentTemplate"];
+        };
+      };
+    };
+  };
+  variables_retrieve: {
+    parameters: {
+      path: {
+        variable_id: string;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ContextVariable"];
+        };
+      };
+    };
+  };
+  variables_update: {
+    parameters: {
+      path: {
+        variable_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ContextVariable"];
+        "application/x-www-form-urlencoded": components["schemas"]["ContextVariable"];
+        "multipart/form-data": components["schemas"]["ContextVariable"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ContextVariable"];
+        };
+      };
+    };
+  };
+  variables_destroy: {
+    parameters: {
+      path: {
+        variable_id: string;
+      };
+    };
+    responses: {
+      /** @description No response body */
+      204: {
+        content: never;
+      };
+    };
+  };
+  variables_partial_update: {
+    parameters: {
+      path: {
+        variable_id: string;
+      };
+    };
+    requestBody?: {
+      content: {
+        "application/json": components["schemas"]["PatchedContextVariable"];
+        "application/x-www-form-urlencoded": components["schemas"]["PatchedContextVariable"];
+        "multipart/form-data": components["schemas"]["PatchedContextVariable"];
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["ContextVariable"];
         };
       };
     };
