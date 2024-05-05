@@ -27,7 +27,7 @@ const Chat: React.FC<IChatProps> = ({chatId, className}) => {
         <ul className="list-disc ml-6">
           {chatData.variables.map((contextVariable: TChatVariable) => (
             <li key={contextVariable.id}>
-              <VariableItem value={contextVariable.value} varId={contextVariable.id} name={contextVariable.name}/>
+              <VariableItem varId={contextVariable.id} />
             </li>
           ))}
           <li key="new-variable">

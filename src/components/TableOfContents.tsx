@@ -67,7 +67,7 @@ const TableOfContentsChat = ({chatId}: {chatId: string}) => {
           className={chatHeaderCls}
           onClick={() => setSelectedChatId(chat.id)}
         >
-          <span className="overflow-hidden text-ellipsis inline-block max-w-64">ID:&nbsp;{chat.id}</span>
+          <span className="overflow-hidden text-ellipsis inline-block max-w-64">{chat.title || `ID: ${chat.id}`}</span>
         </Accordion.Title>
         <Accordion.Content className="m-0 p-0">
           {chat.spans.map((span) => <TableOfContentsSpan key={span.id} spanId={span.id}/>)}

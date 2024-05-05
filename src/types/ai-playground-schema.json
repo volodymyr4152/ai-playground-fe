@@ -2222,7 +2222,10 @@
                         "type": "string",
                         "maxLength": 50
                     },
-                    "value": {},
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -2243,8 +2246,7 @@
                     "created_at",
                     "id",
                     "name",
-                    "updated_at",
-                    "value"
+                    "updated_at"
                 ]
             },
             "ConversationContext": {
@@ -2543,7 +2545,10 @@
                         "type": "string",
                         "maxLength": 50
                     },
-                    "value": {},
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",

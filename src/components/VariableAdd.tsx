@@ -23,13 +23,13 @@ const VariableAdd = () => {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="rounded border border-b-2 border-b-blue-700 px-2 py-0.5 w-1/3 font-mono"
+          className="rounded border border-b-2 border-b-gray-300 px-2 py-0.5 w-1/3 font-mono"
         />
         <span className="pl-1">value</span>
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="rounded border border-b-2 border-b-blue-700 px-2 py-0.5 w-2/3 font-mono"
+          className="rounded border border-b-2 border-b-gray-300 px-2 py-0.5 w-2/3 font-mono"
         />
       </div>
       <button onClick={handleAdd} className="text-gray-600 hover:text-gray-800 hover:bg-amber-200 rounded p-1 ml-2">

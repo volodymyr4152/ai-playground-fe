@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { RiEdit2Line, RiSave2Line, RiCloseLine, RiDeleteBinLine } from 'react-icons/ri';
-import {useDeleteVar, useUpdateVar} from "../hooks/useContextVarsApi";
+import {useContextVar, useDeleteVar, useUpdateVar} from "../hooks/useContextVarsApi";
 import {useChatContext} from "../contexts/chatContexts";
 
-const VariableItem = ({ value, name, varId }) => {
+interface IVariableItemProps {
+  varId: string;
+}
+
+const VariableItem: React.FC<IVariableItemProps> = ({ varId }) => {
   const {chatId} = useChatContext();
+  const {data: varData} = useContextVar(varId)
   const [isEditing, setIsEditing] = useState(false);
-  const [editedValue, setEditedValue] = useState(value);
-  const [editedName, setEditedName] = useState(name);
+  const [editedName, setEditedName] = useState(varData.name);
+  const [editedValue, setEditedValue] = useState(varData.value);
 
   const saveVarMutation = useUpdateVar();
   const deleteVarMutation = useDeleteVar();
@@ -29,24 +34,24 @@ const VariableItem = ({ value, name, varId }) => {
     <div className="flex items-center border-b border-gray-200 py-2 mr-5">
       <div className="flex-1">
         {isEditing ? (
-          <div className="flex space-x-1 items-center">
+          <div className="flex space-x-1 items-center font-mono">
             <span className="pl-1">name</span>
             <input
               value={editedName}
               onChange={(e) => setEditedName(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-0.5 w-20"
+              className="border border-b-2 border-blue-400 rounded px-2 py-0.5 w-1/3"
             />
             <span className="pl-1">value</span>
             <input
               value={editedValue}
               onChange={(e) => setEditedValue(e.target.value)}
-              className="border border-gray-300 rounded px-2 py-0.5 w-28"
+              className="border border-b-2 border-blue-400 rounded px-2 py-0.5 w-2/3"
             />
           </div>
         ) : (
           <div className="space-x-1">
-            <span role="img"><code>{name}</code></span>
-            <span role="img"><code>{value}</code></span>
+            <span className="bg-amber-100 p-0.5 rounded font-mono">{varData.name}</span>
+            <span className="rounded font-mono">{varData.value}</span>
           </div>
         )}
       </div>

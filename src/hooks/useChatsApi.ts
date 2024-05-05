@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {aipeReqInstance, queryKeys} from "../utils";
 import {TChat} from "../types/dataTypes";
 import {setSpanQueryData} from "./useSpanApi";
+import {setContextVarData} from "./useContextVarsApi";
 
 const setChatQueryData = (chat: TChat, queryClient: any, selfUpdate = true) => {
   if (selfUpdate) {
@@ -11,6 +12,7 @@ const setChatQueryData = (chat: TChat, queryClient: any, selfUpdate = true) => {
   chat.memo_items.forEach((memoItem: any) =>
     queryClient.setQueryData(queryKeys.memoItems(memoItem.id), memoItem)
   );
+  chat.variables.forEach((varData: any) => setContextVarData(varData, queryClient));
 }
 
 export const useChatListQuery = (queryParams = undefined) => {

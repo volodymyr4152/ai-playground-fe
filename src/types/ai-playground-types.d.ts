@@ -153,7 +153,7 @@ export interface components {
       /** Format: uuid */
       id: string;
       name: string;
-      value: unknown;
+      value?: string | null;
       /** Format: date-time */
       created_at: string;
       /** Format: date-time */
@@ -252,7 +252,7 @@ export interface components {
       /** Format: uuid */
       id?: string;
       name?: string;
-      value?: unknown;
+      value?: string | null;
       /** Format: date-time */
       created_at?: string;
       /** Format: date-time */

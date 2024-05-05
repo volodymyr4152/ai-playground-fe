@@ -20,7 +20,7 @@ const ToolMessage: React.FC<IToolMessageProps> = ({
 }) => {
   let renderText = call_request.computed_result;
   const codeTags = (renderText) ? (renderText.match(/```/g) || []).length : 0;
-  renderText = codeTags > 0 ? renderText : "```" + renderText + "```";
+  renderText = codeTags > 0 ? renderText : "```\n" + renderText + "\n```";
   return (
     <div className="bg-green-50 p-2 rounded shadow">
       <MessageHeader

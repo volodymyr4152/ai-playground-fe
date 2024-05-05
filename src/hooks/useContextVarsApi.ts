@@ -1,17 +1,22 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {aipeReqInstance, queryKeys} from "../utils";
-import {TChatSpan, TChatVariable} from "../types/dataTypes";
+import {TChatVariable} from "../types/dataTypes";
 
 export const setContextVarData = (varData: TChatVariable, queryClient: any, selfUpdate = true) => {
-  queryClient.setQueryData(queryKeys.variable(varData.id), varData);
+  if (selfUpdate) {
+    queryClient.setQueryData(queryKeys.variable(varData.id), varData);
+  }
 }
 
 export const useContextVar = (varId: string, queryParams = undefined) => {
-  return useQuery<TChatSpan>({
+  const queryClient = useQueryClient();
+  return useQuery<TChatVariable>({
     queryKey: queryKeys.variable(varId),
-    queryFn: () => aipeReqInstance.get(`variables/${varId}/`).then((res) => {
-      return res.data;
-    }),
+    queryFn: () => aipeReqInstance.get(`variables/${varId}/`)
+      .then((res) => {
+        setContextVarData(res.data, queryClient, false);
+        return res.data as TChatVariable;
+      }),
     enabled: !!varId,
     staleTime: Infinity,
     ...queryParams ?? {}
