@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { RiEdit2Line, RiSave2Line, RiCloseLine, RiDeleteBinLine } from 'react-icons/ri';
 import {useContextVar, useDeleteVar, useUpdateVar} from "../hooks/useContextVarsApi";
 import {useChatContext} from "../contexts/chatContexts";
@@ -11,8 +11,8 @@ const VariableItem: React.FC<IVariableItemProps> = ({ varId }) => {
   const {chatId} = useChatContext();
   const {data: varData} = useContextVar(varId)
   const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(varData.name);
-  const [editedValue, setEditedValue] = useState(varData.value);
+  const nameInput = useRef<HTMLInputElement>(null);
+  const valueInput = useRef<HTMLInputElement>(null);
 
   const saveVarMutation = useUpdateVar();
   const deleteVarMutation = useDeleteVar();
@@ -22,7 +22,7 @@ const VariableItem: React.FC<IVariableItemProps> = ({ varId }) => {
   };
 
   const handleSave = () => {
-    saveVarMutation.mutate({varId, varData: {name: editedName, value: editedValue}});
+    saveVarMutation.mutate({varId, varData: {name: nameInput.current.value, value: valueInput.current.value}});
     setIsEditing(false);
   };
 
@@ -37,14 +37,14 @@ const VariableItem: React.FC<IVariableItemProps> = ({ varId }) => {
           <div className="flex space-x-1 items-center font-mono">
             <span className="pl-1">name</span>
             <input
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
+              ref={nameInput}
+              defaultValue={varData?.name}
               className="border border-b-2 border-blue-400 rounded px-2 py-0.5 w-1/3"
             />
             <span className="pl-1">value</span>
             <input
-              value={editedValue}
-              onChange={(e) => setEditedValue(e.target.value)}
+              ref={valueInput}
+              defaultValue={varData?.value}
               className="border border-b-2 border-blue-400 rounded px-2 py-0.5 w-2/3"
             />
           </div>

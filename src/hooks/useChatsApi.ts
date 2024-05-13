@@ -59,3 +59,19 @@ export const useChatQuery = (chatId: string, queryParams = undefined) => {
     ...queryParams ?? {}
   });
 }
+
+
+export interface IUpdateChat {
+  chatData: Partial<TChat>;
+}
+
+export const useUpdateChat = (chatId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ chatData }: IUpdateChat) => aipeReqInstance.patch(`contexts/${chatId}/`, chatData),
+    onSettled: (data, error, variables: IUpdateChat, context) => {
+      return queryClient.invalidateQueries({ queryKey: queryKeys.chat(chatId), exact: true });
+    }
+  });
+}
